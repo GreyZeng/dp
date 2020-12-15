@@ -482,7 +482,54 @@ ApplicationEvent
 
 ## 组合模式
 
-树的遍历
+组合模式中，最常用的一个用法就是目录层级的遍历，话不多说，直接上代码,主方法中
+
+```java
+BranchNode root = new BranchNode("root");
+BranchNode branch1 = new BranchNode("branch1");
+BranchNode branch2 = new BranchNode("branch2");
+branch1.addNode(new LeafNode("leaf1"));
+root.addNode(branch1);
+root.addNode(branch2);
+tree(root, 0);
+```
+其中，BranchNode为分支节点，LeafNode是叶子节点
+达到的效果就是打印如下的形式
+<pre>
+root
+--branch1
+----leaf1
+--branch2
+</pre>
+
+其中BranchNode和LeafNode都实现了Node接口，Node接口(也可以为定义抽象类)仅提供了一个属性(content:标识节点内容)和一个打印方法：
+```java
+public abstract class Node {
+    protected String content;
+
+    protected abstract void print();
+}
+```
+
+BranchNode下可以包含多个Node，因为一个分支下面可以有多个分支（这个分支可以是任意的Node子类)
+
+```java
+public class BranchNode extends Node {
+    private List<Node> nodes = new ArrayList<>(); 
+    public BranchNode(String content) {
+        this.content = content;
+    } 
+    @Override
+    public void print() {
+        System.out.println(content);
+    }
+    // get..set方法略 
+}
+
+```
+组合模式的UML图如下：
+
+![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1607996573171-ee1d3a43-4106-4afa-b101-ed23ad3babb3.png?x-oss-process=image%2Fresize%2Cw_746)
 
 ## 享元模式
 
