@@ -465,9 +465,63 @@ public class Main {
 ![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1607906942723-793f3c5d-d08a-4252-b961-01360438fa8e.png?x-oss-process=image%2Fresize%2Cw_582)
 
 ## 装饰器模式
+顾名思义，就是对某个方法或者对象进行装饰，举个简单的例子，有个圆形类（Circle），我需要把这个圆形的涂上红色，其实就是新增一个装饰器来装饰这个圆形类。
+如果要让装饰器通用一些，可以处理圆形类对应的抽象类 Sharpe，那么对于任意Shape的子类，都可以用红色装饰器来涂红色。
 
-- IO流， Read/InputStream ,Write/OutputStream
-- Tail/RectDecrator
+我们先定义Sharp这个抽象类：
+```java
+public abstract class Sharp {
+    protected abstract void draw();
+}
+```
+然后我们定义Sharp的装饰类：SharpDecorator,这个类是所有装饰器类的抽象类，后续的装饰器只需要实现这个抽象类就可以对Sharp进行各种装饰了，
+
+```java
+public abstract class SharpDecorator extends Sharp {
+    protected Sharp decoratedSharp;
+
+    public SharpDecorator(Sharp decoratedSharp) {
+        this.decoratedSharp = decoratedSharp;
+    }
+}
+```
+
+红色装饰器实现这个抽象类即可：
+
+```java
+public class RedSharpDecorator extends SharpDecorator {
+
+    public RedSharpDecorator(Sharp decoratedSharp) {
+        super(decoratedSharp);
+    }
+
+    private static void redIt() {
+        System.out.println("[RED]");
+    }
+
+    @Override
+    protected void draw() {
+        redIt();
+        this.decoratedSharp.draw();
+        redIt();
+    }
+}
+
+```
+
+主方法调用的时候只需要：
+```java
+ new RedSharpDecorator(new Circle()).draw(); 
+```
+
+UML图如下：
+
+![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1608170853179-3be30d25-ce72-4d61-9541-b6373bb8281d.png?x-oss-process=image%2Fresize%2Cw_746)
+
+
+
+装饰器模式的应用
+- Java中的IO流， Read/InputStream ,Write/OutputStream
 
 ## 观察者模式
 
