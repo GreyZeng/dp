@@ -779,7 +779,99 @@ Object.clone()
 
 ## 模板方法
 
-钩子函数 RestTemplate JDBCTemplate
+假设我们要实现一个游戏，这个游戏有初始化，启动，结束三个方法，我们可以定义一个游戏的模板：
+
+```java
+public abstract class Game {
+    protected abstract void init();
+
+    protected abstract void start();
+
+    protected abstract void end();
+
+    protected final void play() {
+        init();
+        start();
+        end();
+    }
+}
+```
+
+
+
+每种类似这样结构（有初始化，启动，结束）的游戏都可以继承这个类来实现这三个方法，比如BasketballGame
+
+```java
+public class BasketballGame extends Game {
+    @Override
+    protected void init() {
+        System.out.println("basketball init");
+    }
+
+    @Override
+    protected void start() {
+
+        System.out.println("basketball start");
+    }
+
+    @Override
+    protected void end() {
+
+        System.out.println("basketball end");
+    }
+}
+
+```
+
+FootballGame
+
+```java
+public class FootballGame extends Game {
+    @Override
+    protected void init() {
+        System.out.println("football init");
+    }
+
+    @Override
+    protected void start() {
+
+        System.out.println("football start");
+    }
+
+    @Override
+    protected void end() {
+
+        System.out.println("football end");
+    }
+}
+```
+
+主方法在调用的时候，直接：
+
+```java
+Game basketballGame = new BasketballGame();
+basketballGame.play();
+Game footballGame = new FootballGame();
+footballGame.play();
+```
+
+即可
+
+
+
+模板方法的UML图
+
+![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1608454147289-150b6953-6f40-42a6-b8a5-5669bac0fa1f.png)
+
+
+
+实际应用场景
+
+- 钩子函数 
+
+- RestTemplate /JDBCTemplate
+
+
 
 ## State模式
 
