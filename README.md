@@ -10,6 +10,12 @@
 
 [博客园](https://www.cnblogs.com/greyzeng/articles/14107751.html)
 
+## UML和代码
+
+[UML图](https://www.processon.com/view/link/5e93b9e1e0b34d6feaa65b19)
+
+[代码](https://github.com/GreyZeng/dp)
+
 ## 单例模式
 
 ![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1585815368299-cf029297-38cf-493d-9e91-7155d03af486.png)
@@ -879,11 +885,6 @@ footballGame.play();
 
 ## 解释器模式
 
-## UML和代码
-
-[UML图](https://www.processon.com/view/link/5e93b9e1e0b34d6feaa65b19)
-
-[代码](https://github.com/GreyZeng/dp)
 
 ## 参考资料
 
