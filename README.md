@@ -541,21 +541,21 @@ Spring ApplicationEvent
 
 ```java
 BranchNode root=new BranchNode("root");
-        BranchNode branch1=new BranchNode("branch1");
-        BranchNode branch2=new BranchNode("branch2");
-        branch1.addNode(new LeafNode("leaf1"));
-        root.addNode(branch1);
-        root.addNode(branch2);
-        tree(root,0);
+BranchNode branch1=new BranchNode("branch1");
+BranchNode branch2=new BranchNode("branch2");
+branch1.addNode(new LeafNode("leaf1"));
+root.addNode(branch1);
+root.addNode(branch2);
+tree(root,0);
 ```
 
 其中，BranchNode为分支节点，LeafNode是叶子节点 达到的效果就是打印如下的形式
-<pre>
+```
 root
 --branch1
 ----leaf1
 --branch2
-</pre>
+```
 
 其中BranchNode和LeafNode都实现了Node接口，Node接口(也可以为定义抽象类)仅提供了一个属性(content:标识节点内容)和一个打印方法：
 
