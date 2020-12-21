@@ -777,7 +777,71 @@ java.io jdbc-odbc bridge ASM transformer
 
 ## 原型模式
 
-Object.clone()
+原型模式用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象，典型的应用是对象的克隆方法
+
+```java
+public class Person implements Cloneable {
+    String name = "lisa";
+    int age = 1;
+    Location loc = new Location("xy", 10);
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Person p = (Person) super.clone();
+        p.loc = (Location) loc.clone();
+        return p;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", loc=" + loc +
+                '}';
+    }
+}
+```
+
+```java
+public class Location implements Cloneable {
+    private String street;
+    private int roomNo;
+
+    public Location(String street, int roomNo) {
+        this.street = street;
+        this.roomNo = roomNo;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "street='" + street + '\'' +
+                ", roomNo=" + roomNo +
+                '}';
+    }
+}
+```
+
+```java
+public class Main {
+    public static void main(String[] args) throws CloneNotSupportedException {
+        Person p = new Person();
+        System.out.println(p);
+        Person p2 = (Person) p.clone();
+        System.out.println(p2);
+    }
+}
+```
+UML图如下：
+
+![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1608514221624-8a094461-e7fd-4f0b-a7e1-6601f65e55ff.png)
+
 
 ## 备忘录模式
 
