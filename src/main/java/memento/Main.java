@@ -17,7 +17,7 @@ public class Main {
     }
 
     public void save(Person person) {
-        File c = new File("D:/git/tank.data");
+        File c = new File("/tank.data");
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(c));) {
             oos.writeObject(person);
         } catch (IOException e) {
@@ -26,7 +26,7 @@ public class Main {
     }
 
     public void load() {
-        File c = new File("D:/git/tank.data");
+        File c = new File("/tank.data");
         try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(c));) {
 
             Person myTank = (Person) oos.readObject();

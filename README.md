@@ -845,7 +845,55 @@ UML图如下：
 
 ## 备忘录模式
 
-记录状态，记录快照，瞬时状态，存盘 Tank的GameModel的load/save方法（实现序列化接口） 便于回滚
+用于记录对象的某个瞬间 类似快照
+应用实例：
+1. 后悔药。
+2. 打游戏时的存档。
+3. Windows 里的 ctri + z。
+4. IE 中的后退。
+5. 数据库的事务管理。
+
+一个简单的示例
+
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        Person person = new Person();
+        person.name = "zhangsan";
+        person.age = 12;
+        new Main().save(person);
+        new Main().load();
+    }
+
+    public void save(Person person) {
+        File c = new File("/tank.data");
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(c));) {
+            oos.writeObject(person);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void load() {
+        File c = new File("/tank.data");
+        try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(c));) {
+
+            Person myTank = (Person) oos.readObject();
+            System.out.println(myTank);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+UML图：
+![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1608627185954-cef8f8d0-ab59-4344-bcd7-6790fb0101cc.png)
+
+
 
 ## 模板方法
 
