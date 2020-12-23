@@ -6,14 +6,14 @@ package state;
  */
 public class Main {
     public static void main(String[] args) {
-        MM mm = new MM(new SadState());
-        mm.cry();
-        mm.say();
-        mm.smile();
-        mm = new MM(new HappyState());
-        mm.cry();
-        mm.say();
-        mm.smile();
+        Person person = new Person(new SadState());
+        person.cry();
+        person.say();
+        person.smile();
+        person = new Person(new HappyState());
+        person.cry();
+        person.say();
+        person.smile();
 
     }
 }

@@ -975,8 +975,6 @@ footballGame.play();
 
 即可
 
-
-
 模板方法的UML图
 
 ![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1608454147289-150b6953-6f40-42a6-b8a5-5669bac0fa1f.png)
@@ -991,9 +989,78 @@ footballGame.play();
 
 
 
-## State模式
+## 状态模式
 
-状态迁移
+对象的行为依赖于它的状态（属性），并且可以根据它的状态改变而改变它的相关行为。
+
+举个例子，Person有Cry, Smile, Say三种行为，但是在不同状态(SadState, HappyState)下，这三种行为不一样，
+```java
+public class Person {
+    private State state;
+
+    public Person(State state) {
+        this.state = state;
+    }
+
+    void cry() {
+        state.cry();
+    }
+
+    void smile() {
+        state.smile();
+    }
+
+    void say() {
+        state.say();
+    }
+}
+```
+
+在Sad状态下，行为可能是：
+```java
+public class SadState implements State {
+
+    @Override
+    public void cry() {
+        System.out.println("Sad cry");
+    }
+
+    @Override
+    public void smile() {
+        System.out.println("Sad smile");
+    }
+
+    @Override
+    public void say() {
+        System.out.println("Sad say");
+    }
+}
+```
+Happy状态下同理，那么主方法在调用的时候：
+```java
+public class Main {
+    public static void main(String[] args) {
+        Person person = new Person(new SadState());
+        person.cry();
+        person.say();
+        person.smile();
+        person = new Person(new HappyState());
+        person.cry();
+        person.say();
+        person.smile();
+
+    }
+}
+```
+Person就可以根据不同的状态来执行cry，say，smile的行为了
+
+UML图如下：
+
+![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1608687169228-1427b39c-c354-4472-afaa-52d88e318834.png?x-oss-process=image%2Fresize%2Cw_746)
+
+
+
+
 
 ## 解释器模式
 

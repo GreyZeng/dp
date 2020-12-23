@@ -4,20 +4,20 @@ package state;
  * @author Grey
  * @date 2020/4/17
  */
-public class HappyState extends State {
+public class HappyState implements State {
 
     @Override
-    void cry() {
+    public void cry() {
         System.out.println("happy cry");
     }
 
     @Override
-    void smile() {
+    public void smile() {
         System.out.println("happy smile");
     }
 
     @Override
-    void say() {
+    public void say() {
         System.out.println("happy say");
     }
 }

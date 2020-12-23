@@ -4,10 +4,10 @@ package state;
  * @author Grey
  * @date 2020/4/17
  */
-public class MM {
+public class Person {
     private State state;
 
-    public MM(State state) {
+    public Person(State state) {
         this.state = state;
     }
 
@@ -22,5 +22,4 @@ public class MM {
     void say() {
         state.say();
     }
-
 }
