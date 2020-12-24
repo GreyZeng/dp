@@ -608,7 +608,78 @@ String 连接池管理
 
 ## 迭代器模式
 
-- 容器和容器遍历
+迭代器最典型的应用是容器遍历
+
+![iterator](https://cdn.nlark.com/yuque/0/2020/png/757806/1608776439431-59dc6b87-b90f-45ba-9da6-38a631bf9d19.png?x-oss-process=image%2Fresize%2Cw_746)
+
+模仿JDK的容器，我们自定义一个容器并实现iterator方法
+我们先定义一个容器接口：Collection_.java
+
+```java
+public interface Collection_<E> {
+    int size();
+
+    void add(E element);
+
+    Iterator_<E> iterator();
+}
+
+```
+
+里面包括了一个iterator方法，所以每个实现这个容器接口的具体容器类型，都必须自定义iterator方法,
+然后定义一个Iterator接口Iterator_.java, 具体容器中可以增加一个内部类来专门实现这个接口，
+比如我们的具体容器类是ArrayList_.java
+
+```java
+package Iterator;
+
+import static java.lang.System.arraycopy;
+
+/**
+ * @author Grey
+ * @date 2020/4/15
+ */
+public class ArrayList_<E> implements Collection_<E> {
+    private E[] objects = (E[]) new Object[10];
+    private int index = 0;
+
+    @Override
+    public int size() {
+        return index;
+    }
+
+    @Override
+    public void add(E element) {
+        // 见源码，这里略
+    }
+
+    @Override
+    public Iterator_<E> iterator() {
+        return new ArrayListIterator_<>();
+    }
+
+    private class ArrayListIterator_<E> implements Iterator_<E> {
+        private int currentIndex = 0;
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex < index;
+        }
+
+        @Override
+        public E next() {
+            E o = (E) objects[currentIndex];
+            currentIndex++;
+            return o;
+        }
+    }
+
+}
+```
+
+我们主要看ArrayListIterator_这个内部类，里面其实是实现了Iterator_这个接口，所以ArrayList_的遍历操作会执行这个内部类中的操作规则来对其进行遍历。
+
+
 
 ## 访问者模式
 
