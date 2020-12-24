@@ -1216,6 +1216,8 @@ UML图如下：
 
 ## 参考资料
 
+- [Head First 设计模式](https://book.douban.com/subject/2243615/)
+
 - [坦克大战-马士兵](https://ke.qq.com/course/398245)
 
 - [菜鸟教程-设计模式](https://www.runoob.com/design-pattern/design-pattern-tutorial.html)
