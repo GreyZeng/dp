@@ -7,7 +7,9 @@ import java.io.Serializable;
  * @date 2020/4/17
  */
 public class Person implements Serializable {
-    public String name;
+    
+	private static final long serialVersionUID = 8694061726340087034L;
+	public String name;
     public int age;
 
     @Override
