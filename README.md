@@ -531,8 +531,86 @@ UML图如下：
 
 ## 观察者模式
 
-事件处理 往往和责任链模式搭配使用
+一般可以用做事件处理往往和责任链模式搭配使用, 举个例子
+按钮上一般都可以绑定事件，当我们按下按钮的时候，可以触发这些事件的执行，这里就可以用观察者模式来做, 我们先定义按钮这个对象
 
+```java
+public class Button {
+    private List<ActionListener> listeners = new ArrayList<>();
+
+    public void addActionListener(ActionListener listener) {
+        this.listeners.add(listener);
+    }
+
+    @Override
+    public String toString() {
+        return "Button{" +
+                "listeners=" + listeners +
+                '}';
+    }
+
+    public void buttonPressed() {
+        ActionEvent event = new ActionEvent(System.currentTimeMillis(), this);
+        listeners.forEach(item -> item.actionPerformed(event));
+    }
+}
+
+```
+
+由上可知，Button中持有了一个列表，这个列表里面装的就是所有事件的列表，我们可以把事件绑定到这个按钮的事件列表中，这样就可以实现按钮执行press操作的时候，把对应的事件触发执行了
+
+```java
+public interface ActionListener {
+    void actionPerformed(ActionEvent event);
+}
+```
+
+模拟两个监听事件
+
+```java
+public class Listener1 implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        System.out.println("Listener 1 listened it source: [" + event.getSource() + "], when is [" + event.getWhen() + "]");
+    }
+}
+```
+
+```java
+public class Listener2 implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        System.out.println("Listener 2 listened it source: [" + event.getSource() + "], when is [" + event.getWhen() + "]");
+    }
+}
+```
+
+主方法在调用的时候
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        Button button = new Button();
+        button.addActionListener(new Listener1());
+        button.addActionListener(new Listener2());
+        button.buttonPressed();
+    }
+}
+```
+
+当执行
+
+```java
+button.buttonPressed()
+```
+
+的时候，对应的listener1和listener2就可以执行了。
+
+UML图如下
+
+![observer](https://cdn.nlark.com/yuque/0/2020/png/757806/1608778788874-ed2d6e8e-856a-4bea-9dd7-523b84d3f06d.png?x-oss-process=image%2Fresize%2Cw_746)
+
+应用
 Spring ApplicationEvent
 
 ## 组合模式
