@@ -761,9 +761,99 @@ public class ArrayList_<E> implements Collection_<E> {
 
 ## 访问者模式
 
-在**结构不变**的情况下动态改变对于内部元素的动作 做编译器的时候，生成AST的时候，进行类型检查 根据抽象语法树，生成中间代码
+访问者模式在**结构不变**的情况下动态改变对于内部元素的动作，举例说明：
 
-XML文件解析
+假设我们需要构造一台电脑，有主板（Board），CPU，内存（Memory），但是针对企业用户和个人用户，电脑组件的价格是不一样的，我们需要根据不同客户获取一台电脑的总价格。
+
+我们先抽象出电脑组件这个类
+
+```java
+public abstract class ComputerPart {
+    abstract void accept(Visitor visitor);
+    abstract int getPrice();
+}
+```
+
+每个具体组件会继承这个抽象类,以主板(Board)为例
+
+```java
+public class Board extends ComputerPart {
+    @Override
+    void accept(Visitor visitor) {
+        visitor.visitBoard(this);
+    }
+
+    @Override
+    int getPrice() {
+        return 20;
+    }
+}
+```
+
+抽象出一个访问者(Visitor)接口，
+
+```java
+public interface Visitor {
+    void visitCPU(CPU cpu);
+
+    void visitBoard(Board board);
+
+    void visitMemory(Memory memory);
+}
+```
+
+每个具体类型的访问者实现这个接口，然后定义其不同的价格策略，以公司访问者为例(CorpVisitor)
+
+```java
+public class CorpVisitor implements Visitor {
+    private int totalPrice;
+
+    @Override
+    public void visitCPU(CPU cpu) {
+        totalPrice += cpu.getPrice() - 1;
+    }
+
+    @Override
+    public void visitBoard(Board board) {
+        totalPrice += board.getPrice() - 2;
+    }
+
+    @Override
+    public void visitMemory(Memory memory) {
+        totalPrice += memory.getPrice() - 3;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+}
+```
+
+个人访问者(PersonalVisitor）类似
+
+主方法调用
+
+```java
+ComputerPart cpu = new CPU();
+ComputerPart memory = new Memory();
+ComputerPart board = new Board();
+PersonalVisitor personalVisitor = new PersonalVisitor();
+cpu.accept(personalVisitor);
+memory.accept(personalVisitor);
+board.accept(personalVisitor);
+System.out.println(personalVisitor.getTotalPrice());
+```
+
+UML图如下
+
+![Visitor](https://cdn.nlark.com/yuque/0/2020/png/757806/1608796432294-bf88b955-39df-4149-9504-e8d60839225d.png?x-oss-process=image%2Fresize%2Cw_746)
+
+
+应用：
+
+1. 做编译器的时候，需要生成AST，进行类型检查 根据抽象语法树，生成中间代码
+
+2. XML文件解析
 
 ## 构建器模式
 
