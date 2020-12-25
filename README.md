@@ -1012,7 +1012,46 @@ java.io jdbc-odbc bridge ASM transformer
 
 ## 命令模式
 
-结合责任链模式实现多次undo 结合组合模式实现宏命令 结合记忆模式实现transaction回滚
+通过调用者调用接受者执行命令，顺序：调用者→命令→接受者，比如：CopyCommand中的doit方法，就是执行这个copy的命令，undo就是撤销上一次执行的命令，我们可以抽象出Command这个接口：
+
+```java
+public interface Command {
+     void doit();
+
+     void undo();
+}
+```
+
+CopyCommand实现这个接口，并实现doit和undo这两个方法，其他的命令也可以类似的实现出来
+
+```java
+public class CopyCommand implements Command {
+    private Content content;
+
+    public CopyCommand(Content content) {
+        this.content = content;
+    }
+
+
+    @Override
+    public void doit() {
+        content.msg = content.msg + content.msg;
+    }
+
+    @Override
+    public void undo() {
+        content.msg = content.msg.substring(0, content.msg.length() / 2);
+    }
+}
+```
+
+UML图如下
+![Command](https://cdn.nlark.com/yuque/0/2020/png/757806/1608860025027-5e35d0c2-acf4-476f-9575-d56805f2c2e9.png)
+
+命令模式可以
+1. 结合责任链模式实现多次undo 
+2. 结合组合模式实现宏命令 
+3. 结合记忆模式实现transaction回滚
 
 ## 原型模式
 
