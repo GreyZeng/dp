@@ -267,7 +267,7 @@ Sorter<Cat> sorter=new Sorter<>();
         Dog[]sortedCats=sorter.sort(dogs,new DogSortStrategy());
 ```
 
-## 工厂模式
+## [TODO]工厂模式
 
 - 简单工厂
 - 静态工厂--单例模式
@@ -719,7 +719,7 @@ UML图如下
 
 - 连接池管理
 
-## 代理模式
+## [TODO]代理模式
 
 - 静态代理
 - 动态代理
@@ -1051,7 +1051,79 @@ public static OkHttpClient create(long connectTimeOut) {
 
 ## 适配器模式
 
-java.io jdbc-odbc bridge ASM transformer
+举例说明，假设又一个播放器，需要根据不同格式以及对应的文件来播放，接口设计如下：
+
+```java
+public interface MediaPlayer {
+    void play(String type, String fileName);
+}
+
+```
+
+不同类型的播放器只需要实现这个接口即可，比如我们有一个ClassicMediaPlayer，这个只能播放mp3类型的文件
+
+```java
+public class ClassicMediaPlayer implements MediaPlayer {
+    @Override
+    public void play(String type, String fileName) {
+        if ("mp3".equalsIgnoreCase(type)) {
+            System.out.println("play mp3");
+        } else {
+            System.out.println("not supported format");
+        }
+
+    }
+}
+
+```
+
+如果我想扩展，我们可以增加一个适配器：
+
+```java
+public class PlayerAdapter implements MediaPlayer {
+    private AdvanceMediaPlayer advanceMediaPlayer;
+
+    public PlayerAdapter(String type) {
+        if ("mp4".equalsIgnoreCase(type)) {
+            advanceMediaPlayer = new MP4Player();
+        } else if ("AVI".equalsIgnoreCase(type)) {
+            advanceMediaPlayer = new AVIPlayer();
+        }
+    }
+
+    @Override
+    public void play(String type, String fileName) {
+        if ("mp4".equalsIgnoreCase(type)) {
+            advanceMediaPlayer.playMP4(fileName);
+        } else if ("AVI".equalsIgnoreCase(type)) {
+            advanceMediaPlayer.playAVI(fileName);
+        } else {
+            new ClassicMediaPlayer().play(type, fileName);
+        }
+    }
+}
+```
+
+这个适配器就是根据不同类型来构造不同的播放器的，然后定义一个ExtendMediaPlayer，在里面持有PlayAdapter，这样，ExtendMediaPlayer就拥有了播放不同类型文件的能力，所以我们在调用的时候，只需要：
+
+```java
+ExtendMediaPlayer audioPlayer = new ExtendMediaPlayer();
+audioPlayer.play("mp3", "beyond the horizon.mp3");
+audioPlayer.play("mp4", "alone.mp4");
+audioPlayer.play("avi", "far far away.vlc");
+```
+
+UML图如下：
+
+![adaptor](https://cdn.nlark.com/yuque/0/2020/png/757806/1608867626986-80cd66e0-9a02-4e57-a6df-94a2b5d5c30a.png?x-oss-process=image%2Fresize%2Cw_746)
+
+应用
+
+- java.io 
+
+- jdbc-odbc bridge 
+
+- ASM transformer
 
 ## 桥接模式
 
@@ -1436,7 +1508,7 @@ UML图如下：
 
 
 
-## 解释器模式
+## [TODO]解释器模式
 
 一般用于脚本语言解释器
 
