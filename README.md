@@ -1046,6 +1046,7 @@ public class CopyCommand implements Command {
 ```
 
 UML图如下
+
 ![Command](https://cdn.nlark.com/yuque/0/2020/png/757806/1608860025027-5e35d0c2-acf4-476f-9575-d56805f2c2e9.png)
 
 命令模式可以
