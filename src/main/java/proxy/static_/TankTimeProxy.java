@@ -1,4 +1,4 @@
-package proxy.v07;
+package proxy.static_;
 
 public class TankTimeProxy implements Moveable {
     private Moveable m;
