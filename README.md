@@ -462,24 +462,32 @@ public class Main {
 
 ```
 
+UML图如下：
+
+
+
+![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1607906942723-793f3c5d-d08a-4252-b961-01360438fa8e.png?x-oss-process=image%2Fresize%2Cw_582)
+
 应用
 
 - Servlet filter[TODO]
 - Structs interceptor
 - SpringMVC interceptor
 
-![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1607906942723-793f3c5d-d08a-4252-b961-01360438fa8e.png?x-oss-process=image%2Fresize%2Cw_582)
+
 
 ## 装饰器模式
 顾名思义，就是对某个方法或者对象进行装饰，举个简单的例子，有个圆形类（Circle），我需要把这个圆形的涂上红色，其实就是新增一个装饰器来装饰这个圆形类。
 如果要让装饰器通用一些，可以处理圆形类对应的抽象类 Sharpe，那么对于任意Shape的子类，都可以用红色装饰器来涂红色。
 
 我们先定义Sharp这个抽象类：
+
 ```java
 public abstract class Sharp {
     protected abstract void draw();
 }
 ```
+
 然后我们定义Sharp的装饰类：SharpDecorator,这个类是所有装饰器类的抽象类，后续的装饰器只需要实现这个抽象类就可以对Sharp进行各种装饰了，
 
 ```java
@@ -516,6 +524,7 @@ public class RedSharpDecorator extends SharpDecorator {
 ```
 
 主方法调用的时候只需要：
+
 ```java
  new RedSharpDecorator(new Circle()).draw(); 
 ```
@@ -1046,7 +1055,50 @@ java.io jdbc-odbc bridge ASM transformer
 
 ## 桥接模式
 
-抽象和具体的发展单独分支，抽象中持有一个具体的引用 使用桥接模式： 分离抽象与具体实现，让他们可以独自发展 Gift -> WarmGift ColdGift WildGiftGiftImpl -> Flower Ring Car
+使用桥接模式，可以将抽象和具体的发展单独分支(抽象中持有一个具体的引用 )
+举例说明：
+
+GG在追MM的时候，可以送书和花两种礼物
+
+```java
+public class GG {
+    public void chase(MM mm) {
+        Gift g = new WarmGift(new Flower());
+        give(mm, g);
+    }
+    public void give(MM mm, Gift g) {
+        System.out.println(g + "gived!");
+    }
+}
+```
+
+如上代码，Flower被包装成了一个WarmGift送给MM，WarmGift和WildGift都是Gift的一种抽象，Flower和Book都算Gift的一种具体实现, 我们让Gift这个抽象类中，持有一个GiftImpl的引用
+
+```java
+public abstract class Gift {
+    protected GiftImpl impl;
+}
+
+```
+
+```java
+public class Flower extends GiftImpl {
+}
+```
+
+```java
+public class WarmGift extends Gift {
+    public WarmGift(GiftImpl impl) {
+        this.impl = impl;
+    }
+}
+```
+
+UML示例图如下：
+
+![bridge](https://cdn.nlark.com/yuque/0/2020/png/757806/1608867105480-312dea95-3703-4189-994c-436ba28d7068.png?x-oss-process=image%2Fresize%2Cw_746)
+
+
 
 ## 命令模式
 
@@ -1160,6 +1212,8 @@ UML图如下：
 ![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1608514221624-8a094461-e7fd-4f0b-a7e1-6601f65e55ff.png)
 
 
+
+
 ## 备忘录模式
 
 用于记录对象的某个瞬间 类似快照
@@ -1208,6 +1262,7 @@ public class Main {
 ```
 
 UML图：
+
 ![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1608627185954-cef8f8d0-ab59-4344-bcd7-6790fb0101cc.png)
 
 
@@ -1290,9 +1345,9 @@ Game footballGame = new FootballGame();
 footballGame.play();
 ```
 
-即可
 
-模板方法的UML图
+
+UML图如下：
 
 ![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1608454147289-150b6953-6f40-42a6-b8a5-5669bac0fa1f.png)
 
@@ -1311,6 +1366,7 @@ footballGame.play();
 对象的行为依赖于它的状态（属性），并且可以根据它的状态改变而改变它的相关行为。
 
 举个例子，Person有Cry, Smile, Say三种行为，但是在不同状态(SadState, HappyState)下，这三种行为不一样，
+
 ```java
 public class Person {
     private State state;
@@ -1334,6 +1390,7 @@ public class Person {
 ```
 
 在Sad状态下，行为可能是：
+
 ```java
 public class SadState implements State {
 
@@ -1381,15 +1438,14 @@ UML图如下：
 
 ## 解释器模式
 
+一般用于脚本语言解释器
+
 
 ## 参考资料
 
 - [Head First 设计模式](https://book.douban.com/subject/2243615/)
-
+- [设计模式-可复用面向对象软件的基础](https://book.douban.com/subject/1052241/)
 - [坦克大战-马士兵](https://ke.qq.com/course/398245)
-
 - [菜鸟教程-设计模式](https://www.runoob.com/design-pattern/design-pattern-tutorial.html)
-
 - [极客时间-设计模式之美-王争](https://time.geekbang.org/column/intro/250)
-
 - [极客时间-小马哥讲Spring核心编程思想-小马哥](https://time.geekbang.org/course/intro/100042601)
