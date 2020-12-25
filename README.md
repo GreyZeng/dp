@@ -267,14 +267,79 @@ Sorter<Cat> sorter=new Sorter<>();
         Dog[]sortedCats=sorter.sort(dogs,new DogSortStrategy());
 ```
 
-## [TODO]工厂模式
+## 工厂模式
 
-- 简单工厂
-- 静态工厂--单例模式
-- 抽象工厂
-- 工厂方法
+### 抽象工厂
+
+举例，现在需要通过工厂来制造交通工具，如果是现代的工厂，制造的就是汽车，如果是古代的工厂，制造的就是马车, 我们可以先把工厂抽象出来，
+
+```java
+public abstract class AbstractFactory {
+    // 制造交通工具的抽象工厂
+    protected abstract Transportation createTransportation();
+}
+
+```
+
+交通工具我们也可以抽象出来
+
+```java
+public abstract class Transportation {
+    protected abstract void go();
+}
+```
+
+
+对于马车和汽车来说，只需要继承这个Transportation类，实现对应的go方法即可,以汽车为例
+
+```java
+public class Car extends Transportation {
+    @Override
+    protected void go() {
+        System.out.println("car go");
+    }
+}
+```
+
+对于现代工厂还是古代工厂，我们只需要继承AbstractFactory这个类，实现createTransportation方法即可，以现代工厂为例
+
+```java
+public class ModernFactory extends AbstractFactory {
+
+    @Override
+    protected Transportation createTransportation() {
+     	// 现代工厂制造汽车
+        return new Car();
+    }
+}
+```
+
+主方法在调用的时候，只需要
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        AbstractFactory factory = new ModernFactory();
+        factory.createTransportation().go();
+    }
+}
+```
+
+抽象工厂的UML图如下：
+
+![abstract_factory](https://cdn.nlark.com/yuque/0/2020/png/757806/1608882981745-e5a7c7ca-e8a9-48bc-bee6-818145b461fe.png)
+
+
+
+> note
+
+> 单例模式就是一种工厂模式（静态工厂）
+
+
+应用
+
 - Spring IOC DI
-- Hibernate 换数据库只需换方言和驱动就可以
+- Hibernate 换数据库只需换方言和驱动就可以切换不同数据库
 
 ## 门面模式
 
@@ -719,23 +784,129 @@ UML图如下
 
 - 连接池管理
 
-## [TODO]代理模式
+## 代理模式
 
-- 静态代理
-- 动态代理
-    - jdk自带
-        - **ASM操作二进制码**
-        - Java Instrumentation
-    - cglib
-        - final类不行，代理类的子类 底层也是ASM
+静态代理
+
+举例说明，假设我们需要在某个类的某段代码的前后加上日志记录，我们就可以通过静态代理的方式实现
+
+```java
+public class Main {
+    public static void main(String[] args) {
+       new Tank().move();
+    }
+}
+```
+
+假设我们需要在move()方法的前后都加上日志记录，我们可以设置一个代理类
+
+```java
+public class TankLogProxy implements Moveable {
+    private Moveable m;
+
+    public TankLogProxy(Moveable m) {
+        this.m = m;
+    }
+
+    @Override
+    public void move() {
+        System.out.println("log before");
+        m.move();
+        System.out.println("log after");
+    }
+}
+```
+
+这样的话，原先的调用就改成了：
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        new TankLogProxy(new Tank()).move();
+    }
+}
+```
+
+即可实现在move方法调用前后加入日志记录的操作。
+
+UML图如下：
+
+![proxy_static](https://cdn.nlark.com/yuque/0/2020/png/757806/1608883975491-06b130c6-6f39-4cf8-9093-0c23532b0459.png)
+
+动态代理
+
+如果需要通过动态代理（jdk自带的方式）的方式来完成上述功能，我们可以这样来做
+
+```java
+public class MovableProxy implements InvocationHandler {
+    private Movable movable;
+
+    public MovableProxy(Movable movable) {
+        this.movable = movable;
+    }
+
+    public void before() {
+        System.out.println("before , do sth");
+    }
+
+    public void after() {
+        System.out.println("after , do sth");
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        before();
+        Object o = method.invoke(movable, args);
+        after();
+        return o;
+    }
+}
+```
+
+主方法调用的时候：
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        Movable tank = new Tank();
+
+        //reflection 通过二进制字节码分析类的属性和方法
+
+        Movable m = (Movable) Proxy.newProxyInstance(Movable.class.getClassLoader(),
+                new Class[]{Movable.class},
+                new MovableProxy(tank)
+        );
+
+        m.move();
+        m.go();
+    }
+}
+
+```
+
+
+UML图如下：
+
+![dy_proxy](https://cdn.nlark.com/yuque/0/2020/png/757806/1608883986761-04440e84-f392-4509-b121-53513ef293ee.png)
+
+
+实际应用
 
 - Spring AOP
+
+- jdk自带
+	- **ASM操作二进制码**
+	- Java Instrumentation
+	- 必须面向接口
+	
+- cglib
+	- final类不行，代理类的子类 底层也是ASM
 
 ## 迭代器模式
 
 迭代器最典型的应用是容器遍历
 
-![iterator](https://cdn.nlark.com/yuque/0/2020/png/757806/1608776439431-59dc6b87-b90f-45ba-9da6-38a631bf9d19.png?x-oss-process=image%2Fresize%2Cw_746)
+![iterator](https://cdn.nlark.com/yuque/0/2020/png/757806/1608776439431-59dc6b87-b90f-45ba-9da6-38a631bf9d19.png)
 
 模仿JDK的容器，我们自定义一个容器并实现iterator方法
 我们先定义一个容器接口：Collection_.java
@@ -1483,6 +1654,7 @@ public class SadState implements State {
 }
 ```
 Happy状态下同理，那么主方法在调用的时候：
+
 ```java
 public class Main {
     public static void main(String[] args) {
@@ -1508,7 +1680,7 @@ UML图如下：
 
 
 
-## [TODO]解释器模式
+## 解释器模式
 
 一般用于脚本语言解释器
 
