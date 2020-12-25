@@ -670,7 +670,45 @@ public class BranchNode extends Node {
 
 ## 享元模式
 
-String 连接池管理
+运用共享技术有效地支持大量细粒度的对象。主要解决：在有大量对象时，有可能会造成内存溢出，我们把其中共同的部分抽象出来，如果有相同的业务请求，直接返回在内存中已有的对象，避免重新创建。
+
+假设我们有一个子弹类,同时我们设计一个子弹池，子弹池负责提供子弹
+
+```java
+public class BulletPool {
+    List<Bullet> bullets = new ArrayList<>();
+
+    {
+        for (int i = 0; i < 10; i++) {
+            bullets.add(new Bullet(true));
+        }
+    }
+
+    public Bullet getBullet() {
+        for (int i = 0; i < bullets.size(); i++) {
+            if (bullets.get(i).living) {
+                return bullets.get(i);
+            }
+        }
+        return new Bullet(true);
+    }
+}
+
+```
+
+可以看到getBullet逻辑，如果池子中有子弹，就拿池中的子弹，如果没有，就new一个新的子弹返回
+
+UML图如下
+
+![flyweight](https://cdn.nlark.com/yuque/0/2020/png/757806/1608861497667-ff8087e9-873b-4185-af97-759a63a121dd.png)
+
+
+
+应用
+
+- Java中的String[TODO]
+
+- 连接池管理
 
 ## 代理模式
 
