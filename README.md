@@ -780,7 +780,17 @@ UML图如下
 
 应用
 
-- Java中的String[TODO]
+- Java中Boolean的valueOf(boolean b) 方法 ，这个方法返回的Boolean对象不会新new出来，而是复用的同一个, 源码如下：
+
+```java
+public static Boolean valueOf(boolean b) {
+    return (b ? TRUE : FALSE);
+}
+public static final Boolean TRUE = new Boolean(true);
+public static final Boolean FALSE = new Boolean(false);
+
+```
+
 
 - 连接池管理
 
