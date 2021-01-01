@@ -1703,3 +1703,4 @@ UML图如下：
 - [菜鸟教程-设计模式](https://www.runoob.com/design-pattern/design-pattern-tutorial.html)
 - [极客时间-设计模式之美-王争](https://time.geekbang.org/column/intro/250)
 - [极客时间-小马哥讲Spring核心编程思想-小马哥](https://time.geekbang.org/course/intro/100042601)
+- [Effective Java中文版（第3版）](https://book.douban.com/subject/30412517/)
