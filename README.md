@@ -349,11 +349,12 @@ public class Main {
 
 ```java
 public static void main(String[]args){
-        Circle circle=new Sharp();
-        Rectangle rectangle=new Sharp();
-        circle.draw();
-        rectangle.draw();
-        }
+    Sharp circle=new Circle();
+    Sharp rectangle=new Rectangle();
+    circle.draw();
+    rectangle.draw();
+}
+
 ```
 
 如果后续要改变画圆和画矩形逻辑，我们就需要动到这个主方法， 用门面模式的方式，我们可以通过一个SharpMarker来完成画圆形和矩形的逻辑（当作外部调用的门面），那么在改变画圆和画矩形逻辑的时候，就不需要改动主方法了
