@@ -1084,109 +1084,198 @@ UML图如下
 
 2. XML文件解析
 
-## 构建器模式
+## 构造器模式
 
-我们在对一个实体类进行属性的get/set的时候，可以通过封装一些常用的构造方法来简化实体类的构造
+我们在对一个实体类进行属性的get/set的时候，可以通过封装一些常用的构造方法来简化实体类的构造，
 
-比如：
+比如 [Effective Java中文版（第3版）](https://book.douban.com/subject/30412517/) 中举到到这个例子
 
 ```java
-public class Person {
+public class NutritionFacts {
+	private final int servingSize;
+	private final int servings;
+	private final int calories;
+	private final int fat;
+	private final int sodium;
+	private final int carbohydrate;
 
-    private String name;
-    private int age;
-    private String address;
+	public static class Builder {
+		// Required parameters
+		private final int servingSize;
+		private final int servings;
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                ", address='" + address + '\'' +
-                '}';
-    }
+		// Optional parameters - initialized to default values
+		private int calories      = 0;
+		private int fat           = 0;
+		private int sodium        = 0;
+		private int carbohydrate  = 0;
 
-    private Person() {
-    }
+		public Builder(int servingSize, int servings) {
+			this.servingSize = servingSize;
+			this.servings    = servings;
+		}
 
-    public static class PersonBuilder {
-        private Person person = new Person();
+		public Builder calories(int val) {
+			calories = val;
+			return this;
+		}
 
-        public PersonBuilder basicInfo(String name, int age) {
-            person.name = name;
-            person.age = age;
-            return this;
-        }
+		public Builder fat(int val) {
+			fat = val;
+			return this;
+		}
 
-        public PersonBuilder name(String name) {
-            person.name = name;
-            return this;
-        }
+		public Builder sodium(int val) {
+			sodium = val;
+			return this;
+		}
 
-        public PersonBuilder age(int age) {
-            person.age = age;
-            return this;
-        }
+		public Builder carbohydrate(int val) {
+			carbohydrate = val;
+			return this;
+		}
 
-        public PersonBuilder address(String address) {
-            person.address = address;
-            return this;
-        }
+		public NutritionFacts build() {
+			return new NutritionFacts(this);
+		}
+	}
 
-        public Person build() {
-            return person;
-        }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-
+	private NutritionFacts(Builder builder) {
+		servingSize  = builder.servingSize;
+		servings     = builder.servings;
+		calories     = builder.calories;
+		fat          = builder.fat;
+		sodium       = builder.sodium;
+		carbohydrate = builder.carbohydrate;
+	}
 }
 ```
 
-其中PersonBuilder就是一个内部类，用于构造Person的必要信息，外部调用Person的构造方法时候，可以这样使用：
+其中Builder就是一个内部类，用于构造NutritionFacts的必要信息，外部调用NutritionFacts的构造方法时候，可以这样使用：
 
 ```java
-Person person=new Person.PersonBuilder().basicInfo("zhangsan",10).address("xxx").build(); 
+
+NutritionFacts cocaCola = new NutritionFacts.Builder(240, 8).calories(100).sodium(35).carbohydrate(27).build();
+
 ```
 
-![UML](https://cdn.nlark.com/yuque/0/2020/png/757806/1608082733156-6725c22c-78d1-4c52-b661-e932a46ee43d.png)
+![UML](https://cdn.nlark.com/yuque/0/2021/png/757806/1610539905996-0e846f1e-cd6b-4e43-98f6-a9c0f7f1e971.png)
 
-还有一种关于set构造器的编写方式是每次返回this, 这样可以实现“链式构造”
+构造器模式也适用于类层次结构。抽象类有抽象的Builder，具体类有具体的Builder。[Effective Java中文版（第3版）](https://book.douban.com/subject/30412517/) 中还有一个例子，
+假设我们抽象出一个披萨类，各种各样的披萨均可以继承披萨这个抽象类来实现自己的具体类型的披萨。
+
+Pizza抽象类如下：
 
 ```java
-public class Person {
-    private String name;
-    private int age;
-    // 省略get方法
-    public Person name(String name) {
-        this.name = name;
-        return this;
+import java.util.EnumSet;
+import java.util.Objects;
+import java.util.Set;
+
+// Effective Java 3th examples
+public abstract class Pizza {
+    public enum Topping {HAM, MUSHROOM, ONION, PEPPER, SAUSAGE}
+    final Set<Topping> toppings;
+    
+    abstract static class Builder<T extends Builder<T>> {
+        EnumSet<Topping> toppings = EnumSet.noneOf(Topping.class);
+
+        public T addTopping(Topping topping) {
+            toppings.add(Objects.requireNonNull(topping));
+            return self();
+        }
+        
+        abstract Pizza build();
+        
+        // Subclasses must override this method to return "this"
+        protected abstract T self();
     }
 
-    public Person age(int age) {
-        this.age = age;
-        return this;
+    Pizza(Builder<?> builder) {
+        toppings = builder.toppings.clone(); // See Item 50
     }
 }
 ```
+其中的Builder方法是abstract的，所以子类需要实现具体的Builder策略，
 
-主方法在调用的时候可以直接：
+一种披萨的具体实现：NyPizza
 
 ```java
-Person p=new Person();
-p.age(10).name("zhangsan");
+import java.util.Objects;
+
+public class NyPizza extends Pizza {
+	public enum Size {
+		SMALL, MEDIUM, LARGE
+	}
+
+	private final Size size;
+
+	public static class Builder extends Pizza.Builder<Builder> {
+		private final Size size;
+
+		public Builder(Size size) {
+			this.size = Objects.requireNonNull(size);
+		}
+
+		@Override
+		public NyPizza build() {
+			return new NyPizza(this);
+		}
+
+		@Override
+		protected Builder self() {
+			return this;
+		}
+	}
+
+	private NyPizza(Builder builder) {
+		super(builder);
+		size = builder.size;
+	}
+}
+
 ```
+
+另一种披萨的具体实现Calzone:
+
+```java
+public class Calzone extends Pizza {
+	private final boolean sauceInside;
+
+	public static class Builder extends Pizza.Builder<Builder> {
+		private boolean sauceInside = false; // Default
+
+		public Builder sauceInside() {
+			sauceInside = true;
+			return this;
+		}
+
+		@Override
+		public Calzone build() {
+			return new Calzone(this);
+		}
+
+		@Override
+		protected Builder self() {
+			return this;
+		}
+	}
+
+	private Calzone(Builder builder) {
+		super(builder);
+		sauceInside = builder.sauceInside;
+	}
+}
+
+```
+我们在具体调用的时候，可以通过如下方式：
+
+```java
+
+NyPizza pizza = new NyPizza.Builder(SMALL).addTopping(SAUSAGE).addTopping(ONION).build();
+Calzone calzone = new Calzone.Builder().addTopping(HAM).sauceInside().build();
+
+```
+
 
 实际应用有非常多，很多组件都提供这样的构造方式，比如OkHttpClient的构造方法：
 
@@ -1230,6 +1319,8 @@ public static OkHttpClient create(long connectTimeOut) {
                 .build();
     }
 ```
+
+
 
 ## 适配器模式
 
@@ -1698,10 +1789,10 @@ UML图如下：
 
 ## 参考资料
 
+- [Effective Java中文版（第3版）](https://book.douban.com/subject/30412517/)
 - [Head First 设计模式](https://book.douban.com/subject/2243615/)
 - [设计模式-可复用面向对象软件的基础](https://book.douban.com/subject/1052241/)
 - [坦克大战-马士兵](https://ke.qq.com/course/398245)
 - [菜鸟教程-设计模式](https://www.runoob.com/design-pattern/design-pattern-tutorial.html)
 - [极客时间-设计模式之美-王争](https://time.geekbang.org/column/intro/250)
 - [极客时间-小马哥讲Spring核心编程思想-小马哥](https://time.geekbang.org/course/intro/100042601)
-- [Effective Java中文版（第3版）](https://book.douban.com/subject/30412517/)
