@@ -330,10 +330,32 @@ public class Main {
 ![abstract_factory](https://cdn.nlark.com/yuque/0/2020/png/757806/1608882981745-e5a7c7ca-e8a9-48bc-bee6-818145b461fe.png)
 
 
+Java8以后，提供了Supplier这个函数式接口，我们可以通过这个接口很方便的实现工厂类，举例：
 
-> note
+```java
+import java.util.function.Supplier;
 
-> 单例模式就是一种工厂模式（静态工厂）
+public class MoveableFactory {
+    public  Moveable create(Supplier<? extends Moveable> supplier) {
+       return  supplier.get();
+    }
+}
+```
+我们可以定义一个MoveableFactory，里面的create方法，传入的是一个Supplier，你可以把所有Moveable的子类实现传给这个参数
+例如：
+
+```java
+
+Moveable car = new MoveableFactory().create(Car::new);
+car.go();
+Moveable ship = new MoveableFactory().create(()->new Ship("Titanic"));
+ship.go();
+
+```
+
+
+
+注：单例模式就是一种工厂模式（静态工厂）
 
 
 应用

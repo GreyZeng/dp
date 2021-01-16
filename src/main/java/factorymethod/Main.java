@@ -10,5 +10,11 @@ public class Main {
         move.go();
         move = new BusFactory().create();
         move.go();
+
+        Moveable car = new MoveableFactory().create(Car::new);
+        car.go();
+        Moveable ship = new MoveableFactory().create(()->new Ship("Titanic"));
+        ship.go();
+
     }
 }
