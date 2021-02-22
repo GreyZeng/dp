@@ -436,6 +436,7 @@ ship.go();
 
 
 和泥
+
 ```java
 public class Mason {
 	public void mix() {
@@ -443,7 +444,9 @@ public class Mason {
 	}
 }
 ```
+
 搬砖
+
 ```java
 public class BrickWorker   {
     
@@ -452,7 +455,9 @@ public class BrickWorker   {
     }
 }
 ```
+
 砌墙
+
 ```java
 public class BrickLayer {
 	public void neat() {
@@ -461,7 +466,9 @@ public class BrickLayer {
 }
 
 ```
+
 门面
+
 ```java
 public class LabourConstractor {
 	private Mason work1 = new Mason();
@@ -475,7 +482,9 @@ public class LabourConstractor {
     }
 }
 ```
+
 这样主函数只需要调用门面的buildHourse()方法，就可以建造一个房子了
+
 ```java
 public class Client {
 	public static void main(String[] args) {
@@ -484,7 +493,9 @@ public class Client {
 	}
 }
 ```
+
 门面模式的UML图如下
+
 ![QQ截图20210222204649.png](https://cdn.nlark.com/yuque/0/2021/png/757806/1613998027741-4d017846-6956-4cc1-a5de-589b7ccf4a5b.png#align=left&display=inline&height=477&margin=%5Bobject%20Object%5D&name=QQ%E6%88%AA%E5%9B%BE20210222204649.png&originHeight=477&originWidth=783&size=22379&status=done&style=none&width=783)
 
 
@@ -492,6 +503,7 @@ public class Client {
 
 - 应用
    - 消息中间件
+   - SLF4j日志框架
 
 
 
