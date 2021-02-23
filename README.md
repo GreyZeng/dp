@@ -27,7 +27,7 @@
 ## 单例模式
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1585815368299-cf029297-38cf-493d-9e91-7155d03af486.png#align=left&display=inline&height=339&margin=%5Bobject%20Object%5D&originHeight=339&originWidth=241&status=done&style=none&width=241)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1585815368299-cf029297-38cf-493d-9e91-7155d03af486.png#align=left&display=inline&height=339&margin=%5Bobject%20Object%5D&originHeight=339&originWidth=241&status=done&style=none&width=241#align=left&display=inline&height=339&margin=%5Bobject%20Object%5D&originHeight=339&originWidth=241&status=done&style=none&width=241)
 
 
 ### 饿汉式
@@ -230,7 +230,7 @@ public enum Singleton8 {
 ## 策略模式
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1585876508201-2a10502a-777e-48af-80e2-415d547be72a.png#align=left&display=inline&height=270&margin=%5Bobject%20Object%5D&originHeight=270&originWidth=482&status=done&style=none&width=482)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1585876508201-2a10502a-777e-48af-80e2-415d547be72a.png#align=left&display=inline&height=270&margin=%5Bobject%20Object%5D&originHeight=270&originWidth=482&status=done&style=none&width=482#align=left&display=inline&height=270&margin=%5Bobject%20Object%5D&originHeight=270&originWidth=482&status=done&style=none&width=482)
 
 
 实例： 假设我们有一个猫类，这个类里面有体重和身高这两个属性，给你一个猫的集合，然后需要你按猫的体重从小到大排序
@@ -314,9 +314,73 @@ Sorter<Cat> sorter=new Sorter<>();
 ## 工厂模式
 
 
+### 简单工厂
+这个模式很简单，比如我们需要制造不同类型的鼠标，我们只需要创建一个鼠标工厂
+
+
+```java
+public class MouseFactory {
+    public static Mouse  createMouse(int type){
+        switch (type) {
+            case 0: return new DellMouse();
+            case 1: return new HpMouse();
+            case 2: return new LenovoMouse();
+            default: return new DellMouse();
+        }
+    }
+
+    public static void main(String[] args) {
+        Mouse mouse = MouseFactory.createMouse(1);
+        mouse.sayHi();
+    }
+}
+```
+根据不同的type来创建不同的鼠标即可。这个模式的缺点很明显：违反了开闭原则 ，所以我们引入工厂方法
+### 工厂方法
+
+
+工厂方法中，我们可以定义对应产品的对应工厂，以上面这个鼠标的例子为例，我们可以增加工厂的接口
+
+
+```java
+public interface MouseFactory {
+    Mouse createMouse();
+}
+```
+
+
+不同类型的鼠标工厂实现这个工厂即可，以Dell鼠标工厂为例
+
+
+```java
+
+public class DellMouseFactory implements MouseFactory {
+    @Override
+    public Mouse createMouse() {
+        return new DellMouse();
+    }
+}
+```
+
+
+主函数在调用的时候，直接指定工厂即可制造对应的产品了：
+
+
+```java
+public class FactoryMethodDemo {
+    public static void main(String[] args) {
+        MouseFactory mf = new HpMouseFactory();
+        Mouse mouse = mf.createMouse();
+        mouse.sayHi();
+    }
+}
+```
+
+
+工厂方法的优点是符合开闭原则，但是缺点也很明显，就是在增加子类的时候，同时要增加一个子类的工厂，而且，只支持同一类产品的创建，不适用于同一产品族
+
+
 ### 抽象工厂
-
-
 举例，现在需要通过工厂来制造交通工具，如果是现代的工厂，制造的就是汽车，如果是古代的工厂，制造的就是马车, 我们可以先把工厂抽象出来，
 
 
@@ -382,7 +446,7 @@ public class Main {
 抽象工厂的UML图如下：
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608882981745-e5a7c7ca-e8a9-48bc-bee6-818145b461fe.png#align=left&display=inline&height=707&margin=%5Bobject%20Object%5D&originHeight=707&originWidth=1029&status=done&style=none&width=1029)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608882981745-e5a7c7ca-e8a9-48bc-bee6-818145b461fe.png#align=left&display=inline&height=707&margin=%5Bobject%20Object%5D&originHeight=707&originWidth=1029&status=done&style=none&width=1029#align=left&display=inline&height=707&margin=%5Bobject%20Object%5D&originHeight=707&originWidth=1029&status=done&style=none&width=1029)
 
 
 Java8以后，提供了Supplier这个函数式接口，我们可以通过这个接口很方便的实现工厂类，举例：
@@ -428,14 +492,18 @@ ship.go();
 
 假设建造一个房子需要有如下三个步骤：
 
+
 - 和泥
 - 搬砖
 - 砌墙
+
+
 
 如果每次我们制造一个房子都要分别调用这三个方法，就会比较麻烦一些，我们可以设置一个门面，这个门面封装了这三个步骤，后续建造房子，只需要调用这个门面即可。
 
 
 和泥
+
 
 ```java
 public class Mason {
@@ -445,7 +513,9 @@ public class Mason {
 }
 ```
 
+
 搬砖
+
 
 ```java
 public class BrickWorker   {
@@ -456,7 +526,9 @@ public class BrickWorker   {
 }
 ```
 
+
 砌墙
+
 
 ```java
 public class BrickLayer {
@@ -464,10 +536,11 @@ public class BrickLayer {
 		System.out.println("我砌好墙了!");
 	}
 }
-
 ```
 
+
 门面
+
 
 ```java
 public class LabourConstractor {
@@ -483,7 +556,9 @@ public class LabourConstractor {
 }
 ```
 
+
 这样主函数只需要调用门面的buildHourse()方法，就可以建造一个房子了
+
 
 ```java
 public class Client {
@@ -494,11 +569,11 @@ public class Client {
 }
 ```
 
+
 门面模式的UML图如下
 
-![QQ截图20210222204649.png](https://cdn.nlark.com/yuque/0/2021/png/757806/1613998027741-4d017846-6956-4cc1-a5de-589b7ccf4a5b.png#align=left&display=inline&height=477&margin=%5Bobject%20Object%5D&name=QQ%E6%88%AA%E5%9B%BE20210222204649.png&originHeight=477&originWidth=783&size=22379&status=done&style=none&width=783)
 
-
+![QQ截图20210222204649.png](https://cdn.nlark.com/yuque/0/2021/png/757806/1613998027741-4d017846-6956-4cc1-a5de-589b7ccf4a5b.png#align=left&display=inline&height=477&margin=%5Bobject%20Object%5D&name=QQ%E6%88%AA%E5%9B%BE20210222204649.png&originHeight=477&originWidth=783&size=22379&status=done&style=none&width=783#align=left&display=inline&height=477&margin=%5Bobject%20Object%5D&originHeight=477&originWidth=783&status=done&style=none&width=783)
 
 
 - 应用
@@ -550,7 +625,7 @@ public void sendMessage(String content){
 ```
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1607688441427-88798ea0-9ebb-47a7-8058-fdb4c8e18fb1.png#align=left&display=inline&height=394&margin=%5Bobject%20Object%5D&originHeight=394&originWidth=614&status=done&style=none&width=614)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1607688441427-88798ea0-9ebb-47a7-8058-fdb4c8e18fb1.png#align=left&display=inline&height=394&margin=%5Bobject%20Object%5D&originHeight=394&originWidth=614&status=done&style=none&width=614#align=left&display=inline&height=394&margin=%5Bobject%20Object%5D&originHeight=394&originWidth=614&status=done&style=none&width=614)
 
 
 ## 责任链模式
@@ -666,7 +741,7 @@ public class Main {
 UML图如下：
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1607906942723-793f3c5d-d08a-4252-b961-01360438fa8e.png?x-oss-process=image%2Fresize%2Cw_582#align=left&display=inline&height=576&margin=%5Bobject%20Object%5D&originHeight=576&originWidth=582&status=done&style=none&width=582)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1607906942723-793f3c5d-d08a-4252-b961-01360438fa8e.png?x-oss-process=image%2Fresize%2Cw_582#align=left&display=inline&height=576&margin=%5Bobject%20Object%5D&originHeight=576&originWidth=582&status=done&style=none&width=582#align=left&display=inline&height=576&margin=%5Bobject%20Object%5D&originHeight=576&originWidth=582&status=done&style=none&width=582)
 
 
 应用
@@ -744,7 +819,7 @@ public class RedSharpDecorator extends SharpDecorator {
 UML图如下：
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608170853179-3be30d25-ce72-4d61-9541-b6373bb8281d.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=390&margin=%5Bobject%20Object%5D&originHeight=390&originWidth=746&status=done&style=none&width=746)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608170853179-3be30d25-ce72-4d61-9541-b6373bb8281d.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=390&margin=%5Bobject%20Object%5D&originHeight=390&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=390&margin=%5Bobject%20Object%5D&originHeight=390&originWidth=746&status=done&style=none&width=746)
 
 
 装饰器模式的应用
@@ -846,7 +921,7 @@ button.buttonPressed()
 UML图如下
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608778788874-ed2d6e8e-856a-4bea-9dd7-523b84d3f06d.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=471&margin=%5Bobject%20Object%5D&originHeight=471&originWidth=746&status=done&style=none&width=746)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608778788874-ed2d6e8e-856a-4bea-9dd7-523b84d3f06d.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=471&margin=%5Bobject%20Object%5D&originHeight=471&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=471&margin=%5Bobject%20Object%5D&originHeight=471&originWidth=746&status=done&style=none&width=746)
 
 
 应用
@@ -916,7 +991,7 @@ public class BranchNode extends Node {
 组合模式的UML图如下：
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1607996573171-ee1d3a43-4106-4afa-b101-ed23ad3babb3.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=477&margin=%5Bobject%20Object%5D&originHeight=477&originWidth=746&status=done&style=none&width=746)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1607996573171-ee1d3a43-4106-4afa-b101-ed23ad3babb3.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=477&margin=%5Bobject%20Object%5D&originHeight=477&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=477&margin=%5Bobject%20Object%5D&originHeight=477&originWidth=746&status=done&style=none&width=746)
 
 
 ## 享元模式
@@ -956,7 +1031,7 @@ public class BulletPool {
 UML图如下
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608861497667-ff8087e9-873b-4185-af97-759a63a121dd.png#align=left&display=inline&height=358&margin=%5Bobject%20Object%5D&originHeight=358&originWidth=456&status=done&style=none&width=456)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608861497667-ff8087e9-873b-4185-af97-759a63a121dd.png#align=left&display=inline&height=358&margin=%5Bobject%20Object%5D&originHeight=358&originWidth=456&status=done&style=none&width=456#align=left&display=inline&height=358&margin=%5Bobject%20Object%5D&originHeight=358&originWidth=456&status=done&style=none&width=456)
 
 
 应用
@@ -1036,7 +1111,7 @@ public class Main {
 UML图如下：
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608883975491-06b130c6-6f39-4cf8-9093-0c23532b0459.png#align=left&display=inline&height=518&margin=%5Bobject%20Object%5D&originHeight=518&originWidth=887&status=done&style=none&width=887)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608883975491-06b130c6-6f39-4cf8-9093-0c23532b0459.png#align=left&display=inline&height=518&margin=%5Bobject%20Object%5D&originHeight=518&originWidth=887&status=done&style=none&width=887#align=left&display=inline&height=518&margin=%5Bobject%20Object%5D&originHeight=518&originWidth=887&status=done&style=none&width=887)
 
 
 动态代理
@@ -1097,7 +1172,7 @@ public class Main {
 UML图如下：
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608883986761-04440e84-f392-4509-b121-53513ef293ee.png#align=left&display=inline&height=657&margin=%5Bobject%20Object%5D&originHeight=657&originWidth=759&status=done&style=none&width=759)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608883986761-04440e84-f392-4509-b121-53513ef293ee.png#align=left&display=inline&height=657&margin=%5Bobject%20Object%5D&originHeight=657&originWidth=759&status=done&style=none&width=759#align=left&display=inline&height=657&margin=%5Bobject%20Object%5D&originHeight=657&originWidth=759&status=done&style=none&width=759)
 
 
 实际应用
@@ -1119,7 +1194,7 @@ UML图如下：
 迭代器最典型的应用是容器遍历
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608776439431-59dc6b87-b90f-45ba-9da6-38a631bf9d19.png#align=left&display=inline&height=508&margin=%5Bobject%20Object%5D&originHeight=508&originWidth=758&status=done&style=none&width=758)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608776439431-59dc6b87-b90f-45ba-9da6-38a631bf9d19.png#align=left&display=inline&height=508&margin=%5Bobject%20Object%5D&originHeight=508&originWidth=758&status=done&style=none&width=758#align=left&display=inline&height=508&margin=%5Bobject%20Object%5D&originHeight=508&originWidth=758&status=done&style=none&width=758)
 
 
 模仿JDK的容器，我们自定义一个容器并实现iterator方法
@@ -1295,7 +1370,7 @@ System.out.println(personalVisitor.getTotalPrice());
 UML图如下
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608796432294-bf88b955-39df-4149-9504-e8d60839225d.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=460&margin=%5Bobject%20Object%5D&originHeight=460&originWidth=746&status=done&style=none&width=746)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608796432294-bf88b955-39df-4149-9504-e8d60839225d.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=460&margin=%5Bobject%20Object%5D&originHeight=460&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=460&margin=%5Bobject%20Object%5D&originHeight=460&originWidth=746&status=done&style=none&width=746)
 
 
 应用：
@@ -1386,7 +1461,7 @@ NutritionFacts cocaCola = new NutritionFacts.Builder(240, 8).calories(100).sodiu
 ```
 
 
-![](https://cdn.nlark.com/yuque/0/2021/png/757806/1610539905996-0e846f1e-cd6b-4e43-98f6-a9c0f7f1e971.png#align=left&display=inline&height=645&margin=%5Bobject%20Object%5D&originHeight=645&originWidth=536&status=done&style=none&width=536)
+![](https://cdn.nlark.com/yuque/0/2021/png/757806/1610539905996-0e846f1e-cd6b-4e43-98f6-a9c0f7f1e971.png#align=left&display=inline&height=645&margin=%5Bobject%20Object%5D&originHeight=645&originWidth=536&status=done&style=none&width=536#align=left&display=inline&height=645&margin=%5Bobject%20Object%5D&originHeight=645&originWidth=536&status=done&style=none&width=536)
 
 
 构造器模式也适用于类层次结构。抽象类有抽象的Builder，具体类有具体的Builder。[Effective Java中文版（第3版）](https://book.douban.com/subject/30412517/) 中还有一个例子，
@@ -1632,7 +1707,7 @@ audioPlayer.play("avi", "far far away.vlc");
 UML图如下：
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608867626986-80cd66e0-9a02-4e57-a6df-94a2b5d5c30a.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=258&margin=%5Bobject%20Object%5D&originHeight=258&originWidth=746&status=done&style=none&width=746)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608867626986-80cd66e0-9a02-4e57-a6df-94a2b5d5c30a.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=258&margin=%5Bobject%20Object%5D&originHeight=258&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=258&margin=%5Bobject%20Object%5D&originHeight=258&originWidth=746&status=done&style=none&width=746)
 
 
 应用
@@ -1695,7 +1770,7 @@ public class WarmGift extends Gift {
 UML示例图如下：
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608867105480-312dea95-3703-4189-994c-436ba28d7068.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=530&margin=%5Bobject%20Object%5D&originHeight=530&originWidth=746&status=done&style=none&width=746)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608867105480-312dea95-3703-4189-994c-436ba28d7068.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=530&margin=%5Bobject%20Object%5D&originHeight=530&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=530&margin=%5Bobject%20Object%5D&originHeight=530&originWidth=746&status=done&style=none&width=746)
 
 
 ## 命令模式
@@ -1741,7 +1816,7 @@ public class CopyCommand implements Command {
 UML图如下
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608860025027-5e35d0c2-acf4-476f-9575-d56805f2c2e9.png#align=left&display=inline&height=547&margin=%5Bobject%20Object%5D&originHeight=547&originWidth=524&status=done&style=none&width=524)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608860025027-5e35d0c2-acf4-476f-9575-d56805f2c2e9.png#align=left&display=inline&height=547&margin=%5Bobject%20Object%5D&originHeight=547&originWidth=524&status=done&style=none&width=524#align=left&display=inline&height=547&margin=%5Bobject%20Object%5D&originHeight=547&originWidth=524&status=done&style=none&width=524)
 
 
 命令模式可以
@@ -1825,7 +1900,7 @@ public class Main {
 UML图如下：
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608514221624-8a094461-e7fd-4f0b-a7e1-6601f65e55ff.png#align=left&display=inline&height=535&margin=%5Bobject%20Object%5D&originHeight=535&originWidth=676&status=done&style=none&width=676)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608514221624-8a094461-e7fd-4f0b-a7e1-6601f65e55ff.png#align=left&display=inline&height=535&margin=%5Bobject%20Object%5D&originHeight=535&originWidth=676&status=done&style=none&width=676#align=left&display=inline&height=535&margin=%5Bobject%20Object%5D&originHeight=535&originWidth=676&status=done&style=none&width=676)
 
 
 ## 备忘录模式
@@ -1885,7 +1960,7 @@ public class Main {
 UML图：
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608627185954-cef8f8d0-ab59-4344-bcd7-6790fb0101cc.png#align=left&display=inline&height=581&margin=%5Bobject%20Object%5D&originHeight=581&originWidth=571&status=done&style=none&width=571)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608627185954-cef8f8d0-ab59-4344-bcd7-6790fb0101cc.png#align=left&display=inline&height=581&margin=%5Bobject%20Object%5D&originHeight=581&originWidth=571&status=done&style=none&width=571#align=left&display=inline&height=581&margin=%5Bobject%20Object%5D&originHeight=581&originWidth=571&status=done&style=none&width=571)
 
 
 ## 模板方法
@@ -1975,7 +2050,7 @@ footballGame.play();
 UML图如下：
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608454147289-150b6953-6f40-42a6-b8a5-5669bac0fa1f.png#align=left&display=inline&height=569&margin=%5Bobject%20Object%5D&originHeight=569&originWidth=651&status=done&style=none&width=651)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608454147289-150b6953-6f40-42a6-b8a5-5669bac0fa1f.png#align=left&display=inline&height=569&margin=%5Bobject%20Object%5D&originHeight=569&originWidth=651&status=done&style=none&width=651#align=left&display=inline&height=569&margin=%5Bobject%20Object%5D&originHeight=569&originWidth=651&status=done&style=none&width=651)
 
 
 实际应用场景
@@ -2068,7 +2143,7 @@ Person就可以根据不同的状态来执行cry，say，smile的行为了
 UML图如下：
 
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608687169228-1427b39c-c354-4472-afaa-52d88e318834.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=449&margin=%5Bobject%20Object%5D&originHeight=449&originWidth=746&status=done&style=none&width=746)
+![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608687169228-1427b39c-c354-4472-afaa-52d88e318834.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=449&margin=%5Bobject%20Object%5D&originHeight=449&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=449&margin=%5Bobject%20Object%5D&originHeight=449&originWidth=746&status=done&style=none&width=746)
 
 
 ## 解释器模式
@@ -2088,3 +2163,4 @@ UML图如下：
 - [极客时间-设计模式之美-王争](https://time.geekbang.org/column/intro/250)
 - [极客时间-小马哥讲Spring核心编程思想-小马哥](https://time.geekbang.org/course/intro/100042601)
 - [Spring源码轻松学 一课覆盖Spring核心知识点](https://coding.imooc.com/learn/list/420.html)
+
