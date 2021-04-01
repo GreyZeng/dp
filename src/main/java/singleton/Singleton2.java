@@ -18,4 +18,12 @@ public class Singleton2 {
     public static Singleton2 getInstance() {
         return INSTANCE;
     }
+
+    // 这种方式可以通过反射破坏
+    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        Class<?> aClass = Class.forName("singleton.Singleton2", true, Thread.currentThread().getContextClassLoader());
+        Singleton2 instance1 = (Singleton2) aClass.newInstance();
+        Singleton2 instance2 = (Singleton2) aClass.newInstance();
+        System.out.println(instance1 == instance2);
+    }
 }

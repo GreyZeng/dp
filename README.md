@@ -5,13 +5,6 @@
 
 原文地址：
 
-
-[Github](https://github.com/GreyZeng/dp/blob/master/README.md)
-
-
-[语雀](https://www.yuque.com/greyzeng/uzfhep/gzxzch)
-
-
 [博客园](https://www.cnblogs.com/greyzeng/articles/14107751.html)
 
 
@@ -33,7 +26,7 @@
 ### 饿汉式
 
 
-类加载的时候就会初始化这个实例, JVM保证唯一实例,线程安全， 但是可以通过反射破坏
+类加载的时候就会初始化这个实例， JVM保证唯一实例,线程安全， 但是可以通过反射破坏
 
 
 方式一
@@ -69,6 +62,18 @@ public class Singleton2 {
     }
 }
 ```
+
+可以通过如下反射方式破坏
+
+```java
+Class<?> aClass = Class.forName("singleton.Singleton2", true, Thread.currentThread().getContextClassLoader());
+Singleton2 instance1 = (Singleton2) aClass.newInstance();
+Singleton2 instance2 = (Singleton2) aClass.newInstance();
+System.out.println(instance1 == instance2);
+```
+
+输出：false
+
 
 
 ### 懒汉式
