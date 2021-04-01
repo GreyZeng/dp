@@ -89,7 +89,6 @@ public class Singleton3 {
     private static Singleton3 INSTANCE;
 
     private Singleton3() {
-
     }
 
     public static Singleton3 getInstance() {
@@ -160,6 +159,7 @@ public class Singleton5 {
     }
 }
 ```
+
 
 
 Double Check Locking模式,就是双加锁检查模式

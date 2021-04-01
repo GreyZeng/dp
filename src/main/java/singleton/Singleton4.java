@@ -1,5 +1,10 @@
 package singleton;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * 懒汉式
  * 按需初始化
@@ -19,5 +24,15 @@ public class Singleton4 {
             INSTANCE = new Singleton4();
         }
         return INSTANCE;
+    }
+    public static void main(String[] args) {
+        final Set<Singleton4> set = new HashSet<>();
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        for (int i = 0; i < 100; i++) {
+            executorService.execute(() -> {
+                set.add(Singleton4.getInstance());
+            });
+        }
+        System.out.println(set.size());
     }
 }
