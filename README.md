@@ -106,7 +106,6 @@ public class Singleton3 {
 }
 ```
 
-
 为了防止线程不安全，可以在getInstance方法上加锁，这样既实现了按需初始化，又保证了线程安全，但是加锁可能会导致一些性能的问题
 
 
@@ -159,8 +158,6 @@ public class Singleton5 {
     }
 }
 ```
-
-
 
 Double Check Locking模式,就是双加锁检查模式
 

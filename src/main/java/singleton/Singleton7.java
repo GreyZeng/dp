@@ -22,15 +22,4 @@ public class Singleton7 {
     private static class Holder {
         private static final Singleton7 INSTANCE = new Singleton7();
     }
-    public static void main(String[] args) {
-        final Set<Singleton8> set = new HashSet<>();
-        ExecutorService executorService = Executors.newCachedThreadPool();
-        for (int i = 0; i < 100; i++) {
-            executorService.execute(() -> {
-                set.add(Singleton8.INSTANCE);
-            });
-        }
-        System.out.println(set.size());
-    }
-
 }

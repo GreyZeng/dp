@@ -32,14 +32,4 @@ public class Singleton6 {
         }
         return INSTANCE;
     }
-    public static void main(String[] args) {
-        final Set<Singleton6> set = new HashSet<>();
-        ExecutorService executorService = Executors.newCachedThreadPool();
-        for (int i = 0; i < 100; i++) {
-            executorService.execute(() -> {
-                set.add(Singleton6.getInstance());
-            });
-        }
-        System.out.println(set.size());
-    }
 }

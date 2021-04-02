@@ -30,16 +30,4 @@ public class Singleton3 {
         }
         return INSTANCE;
     }
-
-
-    public static void main(String[] args) {
-        final Set<Singleton3> set = new HashSet<>();
-        ExecutorService executorService = Executors.newCachedThreadPool();
-        for (int i = 0; i < 100; i++) {
-            executorService.execute(() -> {
-                set.add(Singleton3.getInstance());
-            });
-        }
-        System.out.println(set.size());
-    }
 }

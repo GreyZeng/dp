@@ -22,7 +22,7 @@ public class Singleton5 {
         if (INSTANCE == null) {
             synchronized (Singleton5.class) {
                 try {
-                    Thread.sleep(1);
+                    Thread.sleep(20);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -30,15 +30,5 @@ public class Singleton5 {
             }
         }
         return INSTANCE;
-    }
-    public static void main(String[] args) {
-        final Set<Singleton5> set = new HashSet<>();
-        ExecutorService executorService = Executors.newCachedThreadPool();
-        for (int i = 0; i < 100; i++) {
-            executorService.execute(() -> {
-                set.add(Singleton5.getInstance());
-            });
-        }
-        System.out.println(set.size());
     }
 }
