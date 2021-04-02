@@ -1,19 +1,18 @@
-package abstractfactory;
+package factory.abstractfactory;
 
 /**
  * @author Grey
  * @date 2020/4/13
  */
-public class AncientFactory extends AbstractFactory {
-
+public class ModernFactory extends AbstractFactory {
 
     @Override
     protected Transportation createTransportation() {
-        return new Coach();
+        return new Car();
     }
 
     @Override
     protected WritingInstrument createWritingInstrument() {
-        return new Brush();
+        return new Pen();
     }
 }

@@ -1,4 +1,4 @@
-package factorymethod;
+package factory.factorymethod;
 
 public class LenovoMouseFactory  implements MouseFactory{
     @Override

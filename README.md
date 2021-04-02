@@ -305,10 +305,10 @@ public class Sorter<T> {
 
 ```java
 Sorter<Cat> sorter=new Sorter<>();
-        Cat[]sortedCats=sorter.sort(cats,new CatSortStrategy());
+Cat[] sortedCats=sorter.sort(cats,new CatSortStrategy());
 
-        Sorter<Dog> sorter=new Sorter<>();
-        Dog[]sortedCats=sorter.sort(dogs,new DogSortStrategy());
+Sorter<Dog> sorter=new Sorter<>();
+Dog[] sortedCats=sorter.sort(dogs,new DogSortStrategy());
 ```
 
 
@@ -316,27 +316,32 @@ Sorter<Cat> sorter=new Sorter<>();
 
 
 ### 简单工厂
+
 这个模式很简单，比如我们需要制造不同类型的鼠标，我们只需要创建一个鼠标工厂
 
 
 ```java
 public class MouseFactory {
-    public static Mouse  createMouse(int type){
-        switch (type) {
-            case 0: return new DellMouse();
-            case 1: return new HpMouse();
-            case 2: return new LenovoMouse();
-            default: return new DellMouse();
-        }
+  public static Mouse createMouse(int type) {
+    switch (type) {
+      case 1:
+        return new HpMouse();
+      case 2:
+        return new LenovoMouse();
+      case 0:
+      default:
+        return new DellMouse();
     }
+  }
 
-    public static void main(String[] args) {
-        Mouse mouse = MouseFactory.createMouse(1);
-        mouse.sayHi();
-    }
+  public static void main(String[] args) {
+    Mouse mouse = MouseFactory.createMouse(1);
+    mouse.sayHi();
+  }
 }
 ```
 根据不同的type来创建不同的鼠标即可。这个模式的缺点很明显：违反了开闭原则 ，所以我们引入工厂方法
+
 ### 工厂方法
 
 
@@ -382,6 +387,7 @@ public class FactoryMethodDemo {
 
 
 ### 抽象工厂
+
 举例，现在需要通过工厂来制造交通工具，如果是现代的工厂，制造的就是汽车，如果是古代的工厂，制造的就是马车, 我们可以先把工厂抽象出来，
 
 
@@ -452,28 +458,20 @@ public class Main {
 
 Java8以后，提供了Supplier这个函数式接口，我们可以通过这个接口很方便的实现工厂类，举例：
 
+我们可以定义一个MovableFactory，里面的create方法，传入的是一个Supplier，你可以把所有Movable的子类实现传给这个参数
 
 ```java
-import java.util.function.Supplier;
 
-public class MoveableFactory {
-    public  Moveable create(Supplier<? extends Moveable> supplier) {
-       return  supplier.get();
-    }
+public class MovableFactory {
+  public static Movable create(Supplier<? extends Movable> supplier) {
+    return supplier.get();
+  }
+
+  public static void main(String[] args) {
+    MovableFactory.create(Car::new).go();
+    MovableFactory.create(() -> new Ship()).go();
+  }
 }
-```
-
-
-我们可以定义一个MoveableFactory，里面的create方法，传入的是一个Supplier，你可以把所有Moveable的子类实现传给这个参数
-例如：
-
-
-```java
-
-Moveable car = new MoveableFactory().create(Car::new);
-car.go();
-Moveable ship = new MoveableFactory().create(()->new Ship("Titanic"));
-ship.go();
 ```
 
 
