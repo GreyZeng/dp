@@ -518,7 +518,6 @@ public class Mason {
 
 ```java
 public class BrickWorker   {
-    
     public void carry() {
         System.out.println("我搬好砖了!");
     }
@@ -620,7 +619,7 @@ User中的sendMessage方法
 ```java
 public void sendMessage(String content){
         ChatRoom.showMessage(this,content);
-        }
+}
 ```
 
 
@@ -641,7 +640,6 @@ public void sendMessage(String content){
 
 
 ```java
-
 public interface Filter {
     boolean doFilter(Msg msg);
 }
@@ -681,18 +679,17 @@ public class HTMLFilter implements Filter {
 
 ```java
 Msg msg=new Msg();
-        msg.setContent("scripts Hell World! 996");
-        System.out.println("before filter , the content is : "+msg.getContent());
-        Filter html=new HTMLFilter();
-        Filter sensitive=new SensitiveFilter();
-        html.doFilter(msg);
-        sensitive.doFilter(msg);
-        System.out.println("after filter , the content is : "+msg.getContent());
+msg.setContent("scripts Hell World! 996");
+System.out.println("before filter , the content is : "+msg.getContent());
+Filter html=new HTMLFilter();
+Filter sensitive=new SensitiveFilter();
+html.doFilter(msg);
+sensitive.doFilter(msg);
+System.out.println("after filter , the content is : "+msg.getContent());
 ```
 
 
-不过，更为优雅的一种方式是设计一个FilterChain，我们把所有的Filter都加入到这个FilterChain里面，对于Msg直接去调用FilterChain的过滤方法即可把FilterChain中的所有Filter都执行(
-而且还可以很灵活指定Filter顺序)
+不过，更为优雅的一种方式是设计一个FilterChain，我们把所有的Filter都加入到这个FilterChain里面，对于Msg直接去调用FilterChain的过滤方法即可把FilterChain中的所有Filter都执行(而且还可以很灵活指定Filter顺序)
 
 
 ```java
@@ -755,8 +752,7 @@ UML图如下：
 ## 装饰器模式
 
 
-顾名思义，就是对某个方法或者对象进行装饰，举个简单的例子，有个圆形类（Circle），我需要把这个圆形的涂上红色，其实就是新增一个装饰器来装饰这个圆形类。
-如果要让装饰器通用一些，可以处理圆形类对应的抽象类 Sharpe，那么对于任意Shape的子类，都可以用红色装饰器来涂红色。
+顾名思义，就是对某个方法或者对象进行装饰，举个简单的例子，有个圆形类（Circle），我需要把这个圆形的涂上红色，其实就是新增一个装饰器来装饰这个圆形类。如果要让装饰器通用一些，可以处理圆形类对应的抽象类 Sharpe，那么对于任意Shape的子类，都可以用红色装饰器来涂红色。
 
 
 我们先定义Sharp这个抽象类：
@@ -821,7 +817,7 @@ UML图如下：
 ![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608170853179-3be30d25-ce72-4d61-9541-b6373bb8281d.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=390&margin=%5Bobject%20Object%5D&originHeight=390&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=390&margin=%5Bobject%20Object%5D&originHeight=390&originWidth=746&status=done&style=none&width=746)
 
 
-装饰器模式的应用
+应用
 
 
 - Java中的IO流， Read/InputStream ,Write/OutputStream
@@ -922,9 +918,9 @@ UML图如下
 
 ![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608778788874-ed2d6e8e-856a-4bea-9dd7-523b84d3f06d.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=471&margin=%5Bobject%20Object%5D&originHeight=471&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=471&margin=%5Bobject%20Object%5D&originHeight=471&originWidth=746&status=done&style=none&width=746)
 
-
 应用
-Spring ApplicationEvent
+
+- Spring ApplicationEvent
 
 
 ## 组合模式
@@ -1264,7 +1260,7 @@ public class ArrayList_<E> implements Collection_<E> {
 ```
 
 
-我们主要看ArrayListIterator_这个内部类，里面其实是实现了Iterator_这个接口，所以ArrayList_的遍历操作会执行这个内部类中的操作规则来对其进行遍历。
+我们主要看 ArrayListIterator_ 这个内部类，里面其实是实现了 Iterator_ 这个接口，所以 ArrayList_ 的遍历操作会执行这个内部类中的操作规则来对其进行遍历。
 
 
 ## 访问者模式
@@ -1372,11 +1368,11 @@ UML图如下
 ![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608796432294-bf88b955-39df-4149-9504-e8d60839225d.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=460&margin=%5Bobject%20Object%5D&originHeight=460&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=460&margin=%5Bobject%20Object%5D&originHeight=460&originWidth=746&status=done&style=none&width=746)
 
 
-应用：
+应用
 
+- 做编译器的时候，需要生成AST，进行类型检查 根据抽象语法树，生成中间代码
 
-1. 做编译器的时候，需要生成AST，进行类型检查 根据抽象语法树，生成中间代码
-1. XML文件解析
+- XML文件解析
 
 
 
@@ -1821,7 +1817,7 @@ UML图如下
 命令模式可以
 
 
-1. 结合责任链模式实现多次undo
+1. 结合责任链模式实现多次undo[TODO]
 1. 结合组合模式实现宏命令
 1. 结合记忆模式实现transaction回滚
 
@@ -2056,7 +2052,7 @@ UML图如下：
 
 
 - 钩子函数
-- RestTemplate /JDBCTemplate
+- Spring中的RestTemplate /JDBCTemplate
 
 
 
