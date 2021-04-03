@@ -1,18 +1,12 @@
-# 设计模式学习笔记
-
 作者：[Grey](https://www.cnblogs.com/greyzeng)
-
 
 原文地址：
 
 [博客园](https://www.cnblogs.com/greyzeng/articles/14107751.html)
 
-
 ## UML和代码
 
-
 [UML图](https://www.processon.com/view/link/5e93b9e1e0b34d6feaa65b19)
-
 
 [代码](https://github.com/GreyZeng/dp)
 
@@ -83,7 +77,6 @@ System.out.println(instance1 == instance2);
 
 
 ```java
-
 
 public class Singleton3 {
     private static Singleton3 INSTANCE;
@@ -340,6 +333,7 @@ public class MouseFactory {
   }
 }
 ```
+
 根据不同的type来创建不同的鼠标即可。这个模式的缺点很明显：违反了开闭原则 ，所以我们引入工厂方法
 
 ### 工厂方法
@@ -359,7 +353,6 @@ public interface MouseFactory {
 
 
 ```java
-
 public class DellMouseFactory implements MouseFactory {
     @Override
     public Mouse createMouse() {
@@ -461,7 +454,6 @@ Java8以后，提供了Supplier这个函数式接口，我们可以通过这个�
 我们可以定义一个MovableFactory，里面的create方法，传入的是一个Supplier，你可以把所有Movable的子类实现传给这个参数
 
 ```java
-
 public class MovableFactory {
   public static Movable create(Supplier<? extends Movable> supplier) {
     return supplier.get();
@@ -575,8 +567,8 @@ public class Client {
 
 
 - 应用
-   - 消息中间件
-   - SLF4j日志框架
+  - 消息中间件
+  - SLF4j日志框架
 
 
 
@@ -1175,11 +1167,11 @@ UML图如下：
 
 - Spring AOP
 - jdk自带
-   - **ASM操作二进制码**
-   - Java Instrumentation
-   - 必须面向接口
+  - **ASM操作二进制码**
+  - Java Instrumentation
+  - 必须面向接口
 - cglib
-   - final类不行，代理类的子类 底层也是ASM
+  - final类不行，代理类的子类 底层也是ASM
 
 
 
@@ -1451,7 +1443,6 @@ public class NutritionFacts {
 
 
 ```java
-
 NutritionFacts cocaCola = new NutritionFacts.Builder(240, 8).calories(100).sodium(35).carbohydrate(27).build();
 ```
 
@@ -1577,7 +1568,6 @@ public class Calzone extends Pizza {
 
 
 ```java
-
 NyPizza pizza = new NyPizza.Builder(SMALL).addTopping(SAUSAGE).addTopping(ONION).build();
 Calzone calzone = new Calzone.Builder().addTopping(HAM).sauceInside().build();
 ```
@@ -2158,4 +2148,3 @@ UML图如下：
 - [极客时间-设计模式之美-王争](https://time.geekbang.org/column/intro/250)
 - [极客时间-小马哥讲Spring核心编程思想-小马哥](https://time.geekbang.org/course/intro/100042601)
 - [Spring源码轻松学 一课覆盖Spring核心知识点](https://coding.imooc.com/learn/list/420.html)
-
