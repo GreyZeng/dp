@@ -1,8 +1,6 @@
 作者：[Grey](https://www.cnblogs.com/greyzeng)
 
-原文地址：
-
-[博客园](https://www.cnblogs.com/greyzeng/articles/14107751.html)
+原文地址： [设计模式学习笔记](https://www.cnblogs.com/greyzeng/articles/14107751.html)
 
 ## UML和代码
 
