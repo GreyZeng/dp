@@ -1,10 +1,12 @@
 ---
-title: 设计模式学习笔记 sticky: 1 tags:
-
-- 设计模式 categories:
+title: 设计模式学习笔记
+sticky: 1
+tags:
+- 设计模式
+categories:
 - ["技术基础","设计模式"]
-  abbrlink: cf6c3d31 date: 2021-01-13 20:14:30
-
+abbrlink: cf6c3d31
+date: 2021-01-13 20:14:30
 ---
 
 <meta name="referrer" content="no-referrer" />
