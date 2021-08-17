@@ -1,4 +1,4 @@
-package template;
+package template.case1;
 
 /**
  * @author Grey

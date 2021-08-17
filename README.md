@@ -1,6 +1,18 @@
-作者：[Grey](https://www.cnblogs.com/greyzeng)
+---
+title: 设计模式学习笔记 sticky: 1 tags:
 
-原文地址： [设计模式学习笔记](https://www.cnblogs.com/greyzeng/articles/14107751.html)
+- 设计模式 categories:
+- ["技术基础","设计模式"]
+  abbrlink: cf6c3d31 date: 2021-01-13 20:14:30
+
+---
+
+<meta name="referrer" content="no-referrer" />
+
+
+作者：[Grey](https://www.greyzeng.com/)
+
+原文地址： [设计模式学习笔记](https://www.greyzeng.com/p/cf6c3d31.html)
 
 ## UML和代码
 
@@ -8,21 +20,17 @@
 
 [代码](https://github.com/GreyZeng/dp)
 
+<!--more-->
 
 ## 单例模式
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1585815368299-cf029297-38cf-493d-9e91-7155d03af486.png#align=left&display=inline&height=339&margin=%5Bobject%20Object%5D&originHeight=339&originWidth=241&status=done&style=none&width=241#align=left&display=inline&height=339&margin=%5Bobject%20Object%5D&originHeight=339&originWidth=241&status=done&style=none&width=241)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203222244-868953152.png)
 
 ### 饿汉式
 
-
 类加载的时候就会初始化这个实例， JVM保证唯一实例,线程安全， 但是可以通过反射破坏
 
-
 方式一
-
 
 ```java
 public class Singleton1 {
@@ -37,9 +45,7 @@ public class Singleton1 {
 }
 ```
 
-
 方式二
-
 
 ```java
 public class Singleton2 {
@@ -58,24 +64,19 @@ public class Singleton2 {
 可以通过如下反射方式破坏
 
 ```java
-Class<?> aClass = Class.forName("singleton.Singleton2", true, Thread.currentThread().getContextClassLoader());
-Singleton2 instance1 = (Singleton2) aClass.newInstance();
-Singleton2 instance2 = (Singleton2) aClass.newInstance();
-System.out.println(instance1 == instance2);
+Class<?> aClass=Class.forName("singleton.Singleton2",true,Thread.currentThread().getContextClassLoader());
+        Singleton2 instance1=(Singleton2)aClass.newInstance();
+        Singleton2 instance2=(Singleton2)aClass.newInstance();
+        System.out.println(instance1==instance2);
 ```
 
 输出：false
 
-
-
 ### 懒汉式
-
 
 虽然可以实现按需初始化，但是线程不安全, 因为在判断INSTANCE == null的时候，如果是多个线程操作的话， 一个线程还没有把INSTANCE初始化好，另外一个线程判断INSTANCE==null 得到true，就会继续初始化
 
-
 ```java
-
 public class Singleton3 {
     private static Singleton3 INSTANCE;
 
@@ -99,7 +100,6 @@ public class Singleton3 {
 
 为了防止线程不安全，可以在getInstance方法上加锁，这样既实现了按需初始化，又保证了线程安全，但是加锁可能会导致一些性能的问题
 
-
 ```java
 public class Singleton4 {
     private static Singleton4 INSTANCE;
@@ -122,9 +122,7 @@ public class Singleton4 {
 }
 ```
 
-
 为了提升一点点性能，可以不给getInstance整个方法加锁，而是对INSTANCE判空这段代码加锁, 但是又带来了线程不安全的问题
-
 
 ```java
 public class Singleton5 {
@@ -152,13 +150,10 @@ public class Singleton5 {
 
 Double Check Locking模式,就是双加锁检查模式
 
-
 **_这种方式中，Volatile是必需的，目的为了防止指令重排，生成一个半初始化的的实例，导致生成两个实例_**
-
 
 具体可参考 [双重检索(DCL)的思考: 为什么要加volatile?](https://blog.csdn.net/weixin_37505014/article/details/97302345)
 说了这个问题
-
 
 ```java
 public class Singleton6 {
@@ -185,12 +180,9 @@ public class Singleton6 {
 }
 ```
 
-
 以下两种更为优雅的方式，既保证了线程安全，又实现了按需加载
 
-
 方式一：静态内部类方式，JVM保证单例，加载外部类时不会加载内部类，这样可以实现懒加载
-
 
 ```java
 public class Singleton7 {
@@ -208,35 +200,25 @@ public class Singleton7 {
 }
 ```
 
-方式二： 使用枚举, 这是实现单例模式的最佳方法。它更简洁，自动支持序列化机制，绝对防止多次实例化,这种方式是 [Effective Java](https://book.douban.com/subject/30412517/) 作者 Josh Bloch
-提倡的方式，它不仅能避免多线程同步问题，而且还自动支持序列化机制，防止反序列化重新创建新的对象，绝对防止多次实例化。
-
+方式二： 使用枚举, 这是实现单例模式的最佳方法。它更简洁，自动支持序列化机制，绝对防止多次实例化,这种方式是 [Effective Java](https://book.douban.com/subject/30412517/) 作者
+Josh Bloch 提倡的方式，它不仅能避免多线程同步问题，而且还自动支持序列化机制，防止反序列化重新创建新的对象，绝对防止多次实例化。
 
 ```java
-public enum Singleton8 {
-    INSTANCE;
-}
+public enum Singleton8 {INSTANCE;}
 ```
-
 
 ## 策略模式
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1585876508201-2a10502a-777e-48af-80e2-415d547be72a.png#align=left&display=inline&height=270&margin=%5Bobject%20Object%5D&originHeight=270&originWidth=482&status=done&style=none&width=482#align=left&display=inline&height=270&margin=%5Bobject%20Object%5D&originHeight=270&originWidth=482&status=done&style=none&width=482)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203253558-1728593764.png)
 
 实例： 假设我们有一个猫类，这个类里面有体重和身高这两个属性，给你一个猫的集合，然后需要你按猫的体重从小到大排序
 
-
 思路： 我们可以把体重从小到大这个看成是一个策略，后续可能衍生其他的策略，比如： 按身高从高到低 按体重从小到大，体重一样的身高从高到低
-
 
 以身高从低到高排序这个策略为例
 
-
 ```java
 public class CatSortStrategy implements Comparator<Cat> {
-
     @Override
     public int compare(Cat o1, Cat o2) {
         return o1.getHeight() - o2.getHeight();
@@ -244,13 +226,10 @@ public class CatSortStrategy implements Comparator<Cat> {
 }
 ```
 
-
 假设我们定义猫排序的方法是: sort 那么这个方法必然需要传入一个排序策略的参数（否则我怎么知道要怎么排序猫？） 所以定义的sort方法可以是：
-
 
 ```java
 public class Sorter {
-
     public Cat[] sort(Cat[] items, Comparator<Cat> strategy) {
         int length = items.length;
         for (int i = 0; i < length; i++) {
@@ -267,13 +246,10 @@ public class Sorter {
 }
 ```
 
-
 进一步抽象，如果我想让Sorter这个工具类不仅可以对猫进行各种策略的排序(基于比较的排序算法)，还可以对狗进行各种策略的排序(基于比较排序算法)，可以将Sorter定义成泛型
-
 
 ```java
 public class Sorter<T> {
-
     public T[] sort(T[] items, Comparator<T> strategy) {
         int length = items.length;
         for (int i = 0; i < length; i++) {
@@ -290,45 +266,36 @@ public class Sorter<T> {
 }
 ```
 
-
 调用的时候, 泛型版本的Sorter可以对猫和狗都进行基于特定排序策略的排序。
 
-
 ```java
-Sorter<Cat> sorter=new Sorter<>();
-Cat[] sortedCats=sorter.sort(cats,new CatSortStrategy());
-
-Sorter<Dog> sorter=new Sorter<>();
-Dog[] sortedCats=sorter.sort(dogs,new DogSortStrategy());
+Sorter<Cat> sorter=new Sorter<>();Cat[]sortedCats=sorter.sort(cats,new CatSortStrategy());Sorter<Dog> sorter=new Sorter<>();Dog[]sortedCats=sorter.sort(dogs,new DogSortStrategy());
 ```
 
-
 ## 工厂模式
-
 
 ### 简单工厂
 
 这个模式很简单，比如我们需要制造不同类型的鼠标，我们只需要创建一个鼠标工厂
 
-
 ```java
 public class MouseFactory {
-  public static Mouse createMouse(int type) {
-    switch (type) {
-      case 1:
-        return new HpMouse();
-      case 2:
-        return new LenovoMouse();
-      case 0:
-      default:
-        return new DellMouse();
+    public static Mouse createMouse(int type) {
+        switch (type) {
+            case 1:
+                return new HpMouse();
+            case 2:
+                return new LenovoMouse();
+            case 0:
+            default:
+                return new DellMouse();
+        }
     }
-  }
 
-  public static void main(String[] args) {
-    Mouse mouse = MouseFactory.createMouse(1);
-    mouse.sayHi();
-  }
+    public static void main(String[] args) {
+        Mouse mouse = MouseFactory.createMouse(1);
+        mouse.sayHi();
+    }
 }
 ```
 
@@ -336,9 +303,7 @@ public class MouseFactory {
 
 ### 工厂方法
 
-
 工厂方法中，我们可以定义对应产品的对应工厂，以上面这个鼠标的例子为例，我们可以增加工厂的接口
-
 
 ```java
 public interface MouseFactory {
@@ -346,9 +311,7 @@ public interface MouseFactory {
 }
 ```
 
-
 不同类型的鼠标工厂实现这个工厂即可，以Dell鼠标工厂为例
-
 
 ```java
 public class DellMouseFactory implements MouseFactory {
@@ -359,9 +322,7 @@ public class DellMouseFactory implements MouseFactory {
 }
 ```
 
-
 主函数在调用的时候，直接指定工厂即可制造对应的产品了：
-
 
 ```java
 public class FactoryMethodDemo {
@@ -373,25 +334,17 @@ public class FactoryMethodDemo {
 }
 ```
 
-
 工厂方法的优点是符合开闭原则，但是缺点也很明显，就是在增加子类的时候，同时要增加一个子类的工厂，而且，只支持同一类产品的创建，不适用于同一产品族
-
 
 ### 抽象工厂
 
 举例，现在需要通过工厂来制造交通工具，如果是现代的工厂，制造的就是汽车，如果是古代的工厂，制造的就是马车, 我们可以先把工厂抽象出来，
 
-
 ```java
-public abstract class AbstractFactory {
-    // 制造交通工具的抽象工厂
-    protected abstract Transportation createTransportation();
-}
+public abstract class AbstractFactory {    // 制造交通工具的抽象工厂    protected abstract Transportation createTransportation();}
 ```
 
-
 交通工具我们也可以抽象出来
-
 
 ```java
 public abstract class Transportation {
@@ -399,9 +352,7 @@ public abstract class Transportation {
 }
 ```
 
-
 对于马车和汽车来说，只需要继承这个Transportation类，实现对应的go方法即可,以汽车为例
-
 
 ```java
 public class Car extends Transportation {
@@ -412,24 +363,15 @@ public class Car extends Transportation {
 }
 ```
 
-
 对于现代工厂还是古代工厂，我们只需要继承AbstractFactory这个类，实现createTransportation方法即可，以现代工厂为例
-
 
 ```java
 public class ModernFactory extends AbstractFactory {
-
     @Override
-    protected Transportation createTransportation() {
-     	// 现代工厂制造汽车
-        return new Car();
-    }
-}
+    protected Transportation createTransportation() {        // 现代工厂制造汽车        return new Car();    }}
 ```
 
-
 主方法在调用的时候，只需要
-
 
 ```java
 public class Main {
@@ -440,12 +382,9 @@ public class Main {
 }
 ```
 
-
 抽象工厂的UML图如下：
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608882981745-e5a7c7ca-e8a9-48bc-bee6-818145b461fe.png#align=left&display=inline&height=707&margin=%5Bobject%20Object%5D&originHeight=707&originWidth=1029&status=done&style=none&width=1029#align=left&display=inline&height=707&margin=%5Bobject%20Object%5D&originHeight=707&originWidth=1029&status=done&style=none&width=1029)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203326014-1594262421.png)
 
 Java8以后，提供了Supplier这个函数式接口，我们可以通过这个接口很方便的实现工厂类，举例：
 
@@ -453,89 +392,72 @@ Java8以后，提供了Supplier这个函数式接口，我们可以通过这个�
 
 ```java
 public class MovableFactory {
-  public static Movable create(Supplier<? extends Movable> supplier) {
-    return supplier.get();
-  }
+    public static Movable create(Supplier<? extends Movable> supplier) {
+        return supplier.get();
+    }
 
-  public static void main(String[] args) {
-    MovableFactory.create(Car::new).go();
-    MovableFactory.create(() -> new Ship()).go();
-  }
+    public static void main(String[] args) {
+        MovableFactory.create(Car::new).go();
+        MovableFactory.create(() -> new Ship()).go();
+    }
 }
 ```
 
-
 注：单例模式就是一种工厂模式（静态工厂）
 
-
 应用
-
 
 - Spring IOC DI
 - Hibernate 换数据库只需换方言和驱动就可以切换不同数据库
 
-
-
 ## 门面模式
 
-
 假设建造一个房子需要有如下三个步骤：
-
 
 - 和泥
 - 搬砖
 - 砌墙
 
-
-
 如果每次我们制造一个房子都要分别调用这三个方法，就会比较麻烦一些，我们可以设置一个门面，这个门面封装了这三个步骤，后续建造房子，只需要调用这个门面即可。
-
 
 和泥
 
-
 ```java
 public class Mason {
-	public void mix() {
-		System.out.println("我和好泥了!");
-	}
+    public void mix() {
+        System.out.println("我和好泥了!");
+    }
 }
 ```
 
-
 搬砖
 
-
 ```java
-public class BrickWorker   {
+public class BrickWorker {
     public void carry() {
         System.out.println("我搬好砖了!");
     }
 }
 ```
 
-
 砌墙
-
 
 ```java
 public class BrickLayer {
-	public void neat() {
-		System.out.println("我砌好墙了!");
-	}
+    public void neat() {
+        System.out.println("我砌好墙了!");
+    }
 }
 ```
 
-
 门面
-
 
 ```java
 public class LabourConstractor {
-	private Mason work1 = new Mason();
-	private BrickWorker work2 = new BrickWorker();
-	private BrickLayer work3 = new BrickLayer(); 
-    
+    private Mason work1 = new Mason();
+    private BrickWorker work2 = new BrickWorker();
+    private BrickLayer work3 = new BrickLayer();
+
     public void buildHouse() {
         work1.mix();
         work2.carry();
@@ -544,37 +466,28 @@ public class LabourConstractor {
 }
 ```
 
-
 这样主函数只需要调用门面的buildHourse()方法，就可以建造一个房子了
-
 
 ```java
 public class Client {
-	public static void main(String[] args) {
-		LabourConstractor labour = new LabourConstractor();
-		labour.buildHouse();
-	}
+    public static void main(String[] args) {
+        LabourConstractor labour = new LabourConstractor();
+        labour.buildHouse();
+    }
 }
 ```
 
-
 门面模式的UML图如下
 
-
-![QQ截图20210222204649.png](https://cdn.nlark.com/yuque/0/2021/png/757806/1613998027741-4d017846-6956-4cc1-a5de-589b7ccf4a5b.png#align=left&display=inline&height=477&margin=%5Bobject%20Object%5D&name=QQ%E6%88%AA%E5%9B%BE20210222204649.png&originHeight=477&originWidth=783&size=22379&status=done&style=none&width=783#align=left&display=inline&height=477&margin=%5Bobject%20Object%5D&originHeight=477&originWidth=783&status=done&style=none&width=783)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203343856-1183327810.png)
 
 - 应用
-  - 消息中间件
-  - SLF4j日志框架
-
-
+    - 消息中间件
+    - SLF4j日志框架
 
 ## 调停者/中介模式
 
-
 举个简单的例子，如果一个聊天室里面的用户1和用户2要聊天，聊天室就相当于中介的地位，用户1和用户2只管调用发消息方法，聊天室即可把消息给对方
-
 
 ```java
 public class ChatRoom {
@@ -584,12 +497,9 @@ public class ChatRoom {
 }
 ```
 
-
 以上代码表示，聊天室将user说的content展示出来
 
-
 主方法只需要如下调用即可：
-
 
 ```java
 public class Main {
@@ -602,32 +512,22 @@ public class Main {
 }
 ```
 
-
 User中的sendMessage方法
 
-
 ```java
-public void sendMessage(String content){
-        ChatRoom.showMessage(this,content);
-}
+public void sendMessage(String content){ChatRoom.showMessage(this,content);}
 ```
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1607688441427-88798ea0-9ebb-47a7-8058-fdb4c8e18fb1.png#align=left&display=inline&height=394&margin=%5Bobject%20Object%5D&originHeight=394&originWidth=614&status=done&style=none&width=614#align=left&display=inline&height=394&margin=%5Bobject%20Object%5D&originHeight=394&originWidth=614&status=done&style=none&width=614)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203406702-129534644.png)
 
 ## 责任链模式
 
-
 有一段文本需要过滤敏感字，我们可以通过责任链模式来设计这个功能，假设文本是：scripts Hell World! 996
-
 
 我们有多个过滤规则，比如第一个规则是：过滤 scripts 这个关键字(实际的规则可能很复杂，目前只是举这个简单例子来说明情况)
 第二个规则是：过滤 996 这个关键字
 
-
 我们可以抽象一个Filter接口，各种过滤规则无非就是实现这个接口即可
-
 
 ```java
 public interface Filter {
@@ -635,9 +535,7 @@ public interface Filter {
 }
 ```
 
-
 过滤 996 的规则：
-
 
 ```java
 public class SensitiveFilter implements Filter {
@@ -649,9 +547,7 @@ public class SensitiveFilter implements Filter {
 }
 ```
 
-
 过滤 scripts 的规则：
-
 
 ```java
 public class HTMLFilter implements Filter {
@@ -663,51 +559,20 @@ public class HTMLFilter implements Filter {
 }
 ```
 
-
 主方法调用的时候，就直接New 相应的Filter来处理即可：
 
-
 ```java
-Msg msg=new Msg();
-msg.setContent("scripts Hell World! 996");
-System.out.println("before filter , the content is : "+msg.getContent());
-Filter html=new HTMLFilter();
-Filter sensitive=new SensitiveFilter();
-html.doFilter(msg);
-sensitive.doFilter(msg);
-System.out.println("after filter , the content is : "+msg.getContent());
+Msg msg=new Msg();msg.setContent("scripts Hell World! 996");System.out.println("before filter , the content is : "+msg.getContent());Filter html=new HTMLFilter();Filter sensitive=new SensitiveFilter();html.doFilter(msg);sensitive.doFilter(msg);System.out.println("after filter , the content is : "+msg.getContent());
 ```
 
-
-不过，更为优雅的一种方式是设计一个FilterChain，我们把所有的Filter都加入到这个FilterChain里面，对于Msg直接去调用FilterChain的过滤方法即可把FilterChain中的所有Filter都执行(而且还可以很灵活指定Filter顺序)
-
+不过，更为优雅的一种方式是设计一个FilterChain，我们把所有的Filter都加入到这个FilterChain里面，对于Msg直接去调用FilterChain的过滤方法即可把FilterChain中的所有Filter都执行(
+而且还可以很灵活指定Filter顺序)
 
 ```java
-public class FilterChain implements Filter {
-    // 这里存所有需要应用的Filter
-    private List<Filter> filters = new ArrayList<>();
-
-    public FilterChain addFilter(Filter filter) {
-        filters.add(filter);
-        return this;
-    }
-
-    @Override
-    public boolean doFilter(Msg msg) {
-        // 这里可以灵活指定Filter的执行顺序
-        for (Filter filter : filters) {
-            if (!filter.doFilter(msg)) {
-                return false;
-            }
-        }
-        return true;
-    }
-}
+public class FilterChain implements Filter {    // 这里存所有需要应用的Filter    private List<Filter> filters = new ArrayList<>();    public FilterChain addFilter(Filter filter) {        filters.add(filter);        return this;    }    @Override    public boolean doFilter(Msg msg) {        // 这里可以灵活指定Filter的执行顺序        for (Filter filter : filters) {            if (!filter.doFilter(msg)) {                return false;            }        }        return true;    }}
 ```
-
 
 那么主方法在调用的时候，可以直接通过如下的方式：
-
 
 ```java
 public class Main {
@@ -723,30 +588,22 @@ public class Main {
 }
 ```
 
-
 UML图如下：
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1607906942723-793f3c5d-d08a-4252-b961-01360438fa8e.png?x-oss-process=image%2Fresize%2Cw_582#align=left&display=inline&height=576&margin=%5Bobject%20Object%5D&originHeight=576&originWidth=582&status=done&style=none&width=582#align=left&display=inline&height=576&margin=%5Bobject%20Object%5D&originHeight=576&originWidth=582&status=done&style=none&width=582)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203516601-873689756.png)
 
 应用
-
 
 - Servlet filter[TODO]
 - Structs interceptor
 - SpringMVC interceptor
 
-
-
 ## 装饰器模式
 
-
-顾名思义，就是对某个方法或者对象进行装饰，举个简单的例子，有个圆形类（Circle），我需要把这个圆形的涂上红色，其实就是新增一个装饰器来装饰这个圆形类。如果要让装饰器通用一些，可以处理圆形类对应的抽象类 Sharpe，那么对于任意Shape的子类，都可以用红色装饰器来涂红色。
-
+顾名思义，就是对某个方法或者对象进行装饰，举个简单的例子，有个圆形类（Circle），我需要把这个圆形的涂上红色，其实就是新增一个装饰器来装饰这个圆形类。如果要让装饰器通用一些，可以处理圆形类对应的抽象类
+Sharpe，那么对于任意Shape的子类，都可以用红色装饰器来涂红色。
 
 我们先定义Sharp这个抽象类：
-
 
 ```java
 public abstract class Sharp {
@@ -754,9 +611,7 @@ public abstract class Sharp {
 }
 ```
 
-
 然后我们定义Sharp的装饰类：SharpDecorator,这个类是所有装饰器类的抽象类，后续的装饰器只需要实现这个抽象类就可以对Sharp进行各种装饰了，
-
 
 ```java
 public abstract class SharpDecorator extends Sharp {
@@ -768,13 +623,10 @@ public abstract class SharpDecorator extends Sharp {
 }
 ```
 
-
 红色装饰器实现这个抽象类即可：
-
 
 ```java
 public class RedSharpDecorator extends SharpDecorator {
-
     public RedSharpDecorator(Sharp decoratedSharp) {
         super(decoratedSharp);
     }
@@ -792,34 +644,23 @@ public class RedSharpDecorator extends SharpDecorator {
 }
 ```
 
-
 主方法调用的时候只需要：
-
 
 ```java
  new RedSharpDecorator(new Circle()).draw();
 ```
 
-
 UML图如下：
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608170853179-3be30d25-ce72-4d61-9541-b6373bb8281d.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=390&margin=%5Bobject%20Object%5D&originHeight=390&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=390&margin=%5Bobject%20Object%5D&originHeight=390&originWidth=746&status=done&style=none&width=746)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203536732-1353467687.png)
 
 应用
 
-
 - Java中的IO流， Read/InputStream ,Write/OutputStream
-
-
 
 ## 观察者模式
 
-
-一般可以用做事件处理往往和责任链模式搭配使用, 举个例子
-按钮上一般都可以绑定事件，当我们按下按钮的时候，可以触发这些事件的执行，这里就可以用观察者模式来做, 我们先定义按钮这个对象
-
+一般可以用做事件处理往往和责任链模式搭配使用, 举个例子 按钮上一般都可以绑定事件，当我们按下按钮的时候，可以触发这些事件的执行，这里就可以用观察者模式来做, 我们先定义按钮这个对象
 
 ```java
 public class Button {
@@ -831,9 +672,7 @@ public class Button {
 
     @Override
     public String toString() {
-        return "Button{" +
-                "listeners=" + listeners +
-                '}';
+        return "Button{" + "listeners=" + listeners + '}';
     }
 
     public void buttonPressed() {
@@ -843,9 +682,7 @@ public class Button {
 }
 ```
 
-
 由上可知，Button中持有了一个列表，这个列表里面装的就是所有事件的列表，我们可以把事件绑定到这个按钮的事件列表中，这样就可以实现按钮执行press操作的时候，把对应的事件触发执行了
-
 
 ```java
 public interface ActionListener {
@@ -853,9 +690,7 @@ public interface ActionListener {
 }
 ```
 
-
 模拟两个监听事件
-
 
 ```java
 public class Listener1 implements ActionListener {
@@ -866,7 +701,6 @@ public class Listener1 implements ActionListener {
 }
 ```
 
-
 ```java
 public class Listener2 implements ActionListener {
     @Override
@@ -876,9 +710,7 @@ public class Listener2 implements ActionListener {
 }
 ```
 
-
 主方法在调用的时候
-
 
 ```java
 public class Main {
@@ -891,58 +723,37 @@ public class Main {
 }
 ```
 
-
 当执行
-
 
 ```java
 button.buttonPressed()
 ```
 
-
 的时候，对应的listener1和listener2就可以执行了。
-
 
 UML图如下
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608778788874-ed2d6e8e-856a-4bea-9dd7-523b84d3f06d.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=471&margin=%5Bobject%20Object%5D&originHeight=471&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=471&margin=%5Bobject%20Object%5D&originHeight=471&originWidth=746&status=done&style=none&width=746)
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203601186-123826961.png)
 
 应用
 
 - Spring ApplicationEvent
 
-
 ## 组合模式
-
 
 组合模式中，最常用的一个用法就是目录层级的遍历，话不多说，直接上代码,主方法中
 
-
 ```java
-BranchNode root=new BranchNode("root");
-BranchNode branch1=new BranchNode("branch1");
-BranchNode branch2=new BranchNode("branch2");
-branch1.addNode(new LeafNode("leaf1"));
-root.addNode(branch1);
-root.addNode(branch2);
-tree(root,0);
+BranchNode root=new BranchNode("root");BranchNode branch1=new BranchNode("branch1");BranchNode branch2=new BranchNode("branch2");branch1.addNode(new LeafNode("leaf1"));root.addNode(branch1);root.addNode(branch2);tree(root,0);
 ```
-
 
 其中，BranchNode为分支节点，LeafNode是叶子节点 达到的效果就是打印如下的形式
 
-
 ```
-root
---branch1
-----leaf1
---branch2
+root--branch1----leaf1--branch2
 ```
-
 
 其中BranchNode和LeafNode都实现了Node接口，Node接口(也可以为定义抽象类)仅提供了一个属性(content:标识节点内容)和一个打印方法：
-
 
 ```java
 public abstract class Node {
@@ -952,9 +763,7 @@ public abstract class Node {
 }
 ```
 
-
 BranchNode下可以包含多个Node，因为一个分支下面可以有多个分支（这个分支可以是任意的Node子类)
-
 
 ```java
 public class BranchNode extends Node {
@@ -967,26 +776,18 @@ public class BranchNode extends Node {
     @Override
     public void print() {
         System.out.println(content);
-    }
-    // get..set方法略 
-}
+    }    // get..set方法略 }
 ```
-
 
 组合模式的UML图如下：
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1607996573171-ee1d3a43-4106-4afa-b101-ed23ad3babb3.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=477&margin=%5Bobject%20Object%5D&originHeight=477&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=477&margin=%5Bobject%20Object%5D&originHeight=477&originWidth=746&status=done&style=none&width=746)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203614877-848857361.png)
 
 ## 享元模式
 
-
 运用共享技术有效地支持大量细粒度的对象。主要解决：在有大量对象时，有可能会造成内存溢出，我们把其中共同的部分抽象出来，如果有相同的业务请求，直接返回在内存中已有的对象，避免重新创建。
 
-
 假设我们有一个子弹类,同时我们设计一个子弹池，子弹池负责提供子弹
-
 
 ```java
 public class BulletPool {
@@ -1009,56 +810,37 @@ public class BulletPool {
 }
 ```
 
-
 可以看到getBullet逻辑，如果池子中有子弹，就拿池中的子弹，如果没有，就new一个新的子弹返回
-
 
 UML图如下
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608861497667-ff8087e9-873b-4185-af97-759a63a121dd.png#align=left&display=inline&height=358&margin=%5Bobject%20Object%5D&originHeight=358&originWidth=456&status=done&style=none&width=456#align=left&display=inline&height=358&margin=%5Bobject%20Object%5D&originHeight=358&originWidth=456&status=done&style=none&width=456)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203629627-1862189178.png)
 
 应用
 
-
 - Java中Boolean的valueOf(boolean b) 方法 ，这个方法返回的Boolean对象不会新new出来，而是复用的同一个, 源码如下：
 
-
-
 ```java
-public static Boolean valueOf(boolean b) {
-    return (b ? TRUE : FALSE);
-}
-public static final Boolean TRUE = new Boolean(true);
-public static final Boolean FALSE = new Boolean(false);
+public static Boolean valueOf(boolean b){return(b?TRUE:FALSE);}public static final Boolean TRUE=new Boolean(true);public static final Boolean FALSE=new Boolean(false);
 ```
-
 
 - 连接池管理
 
-
-
 ## 代理模式
-
 
 静态代理
 
-
 举例说明，假设我们需要在某个类的某段代码的前后加上日志记录，我们就可以通过静态代理的方式实现
-
 
 ```java
 public class Main {
     public static void main(String[] args) {
-       new Tank().move();
+        new Tank().move();
     }
 }
 ```
 
-
 假设我们需要在move()方法的前后都加上日志记录，我们可以设置一个代理类
-
 
 ```java
 public class TankLogProxy implements Moveable {
@@ -1077,9 +859,7 @@ public class TankLogProxy implements Moveable {
 }
 ```
 
-
 这样的话，原先的调用就改成了：
-
 
 ```java
 public class Main {
@@ -1089,21 +869,15 @@ public class Main {
 }
 ```
 
-
 即可实现在move方法调用前后加入日志记录的操作。
-
 
 UML图如下：
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608883975491-06b130c6-6f39-4cf8-9093-0c23532b0459.png#align=left&display=inline&height=518&margin=%5Bobject%20Object%5D&originHeight=518&originWidth=887&status=done&style=none&width=887#align=left&display=inline&height=518&margin=%5Bobject%20Object%5D&originHeight=518&originWidth=887&status=done&style=none&width=887)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203656533-1601497167.png)
 
 动态代理
 
-
 如果需要通过动态代理（jdk自带的方式）的方式来完成上述功能，我们可以这样来做
-
 
 ```java
 public class MovableProxy implements InvocationHandler {
@@ -1131,60 +905,35 @@ public class MovableProxy implements InvocationHandler {
 }
 ```
 
-
 主方法调用的时候：
-
 
 ```java
 public class Main {
     public static void main(String[] args) {
-        Movable tank = new Tank();
-
-        //reflection 通过二进制字节码分析类的属性和方法
-
-        Movable m = (Movable) Proxy.newProxyInstance(Movable.class.getClassLoader(),
-                new Class[]{Movable.class},
-                new MovableProxy(tank)
-        );
-
-        m.move();
-        m.go();
-    }
-}
+        Movable tank = new Tank();        //reflection 通过二进制字节码分析类的属性和方法        Movable m = (Movable) Proxy.newProxyInstance(Movable.class.getClassLoader(),                new Class[]{Movable.class},                new MovableProxy(tank)        );        m.move();        m.go();    }}
 ```
-
 
 UML图如下：
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608883986761-04440e84-f392-4509-b121-53513ef293ee.png#align=left&display=inline&height=657&margin=%5Bobject%20Object%5D&originHeight=657&originWidth=759&status=done&style=none&width=759#align=left&display=inline&height=657&margin=%5Bobject%20Object%5D&originHeight=657&originWidth=759&status=done&style=none&width=759)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203721492-1693873933.png)
 
 实际应用
 
-
 - Spring AOP
 - jdk自带
-  - **ASM操作二进制码**
-  - Java Instrumentation
-  - 必须面向接口
+    - **ASM操作二进制码**
+    - Java Instrumentation
+    - 必须面向接口
 - cglib
-  - final类不行，代理类的子类 底层也是ASM
-
-
+    - final类不行，代理类的子类 底层也是ASM
 
 ## 迭代器模式
 
-
 迭代器最典型的应用是容器遍历
 
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203731990-1271210219.png)
 
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608776439431-59dc6b87-b90f-45ba-9da6-38a631bf9d19.png#align=left&display=inline&height=508&margin=%5Bobject%20Object%5D&originHeight=508&originWidth=758&status=done&style=none&width=758#align=left&display=inline&height=508&margin=%5Bobject%20Object%5D&originHeight=508&originWidth=758&status=done&style=none&width=758)
-
-
-模仿JDK的容器，我们自定义一个容器并实现iterator方法
-我们先定义一个容器接口：Collection_.java
-
+模仿JDK的容器，我们自定义一个容器并实现iterator方法 我们先定义一个容器接口：Collection_.java
 
 ```java
 public interface Collection_<E> {
@@ -1196,21 +945,15 @@ public interface Collection_<E> {
 }
 ```
 
-
-里面包括了一个iterator方法，所以每个实现这个容器接口的具体容器类型，都必须自定义iterator方法,
-然后定义一个Iterator接口Iterator_.java, 具体容器中可以增加一个内部类来专门实现这个接口，
+里面包括了一个iterator方法，所以每个实现这个容器接口的具体容器类型，都必须自定义iterator方法, 然后定义一个Iterator接口Iterator_.java, 具体容器中可以增加一个内部类来专门实现这个接口，
 比如我们的具体容器类是ArrayList_.java
-
 
 ```java
 package Iterator;
 
 import static java.lang.System.arraycopy;
 
-/**
- * @author Grey
- * @date 2020/4/15
- */
+/** * @author Grey * @date 2020/4/15 */
 public class ArrayList_<E> implements Collection_<E> {
     private E[] objects = (E[]) new Object[10];
     private int index = 0;
@@ -1221,60 +964,28 @@ public class ArrayList_<E> implements Collection_<E> {
     }
 
     @Override
-    public void add(E element) {
-        // 见源码，这里略
-    }
-
-    @Override
-    public Iterator_<E> iterator() {
-        return new ArrayListIterator_<>();
-    }
-
-    private class ArrayListIterator_<E> implements Iterator_<E> {
-        private int currentIndex = 0;
-
-        @Override
-        public boolean hasNext() {
-            return currentIndex < index;
-        }
-
-        @Override
-        public E next() {
-            E o = (E) objects[currentIndex];
-            currentIndex++;
-            return o;
-        }
-    }
-
-}
+    public void add(E element) {        // 见源码，这里略    }    @Override    public Iterator_<E> iterator() {        return new ArrayListIterator_<>();    }    private class ArrayListIterator_<E> implements Iterator_<E> {        private int currentIndex = 0;        @Override        public boolean hasNext() {            return currentIndex < index;        }        @Override        public E next() {            E o = (E) objects[currentIndex];            currentIndex++;            return o;        }    }}
 ```
-
 
 我们主要看 ArrayListIterator_ 这个内部类，里面其实是实现了 Iterator_ 这个接口，所以 ArrayList_ 的遍历操作会执行这个内部类中的操作规则来对其进行遍历。
 
-
 ## 访问者模式
-
 
 访问者模式在**结构不变**的情况下动态改变对于内部元素的动作，举例说明：
 
-
 假设我们需要构造一台电脑，有主板（Board），CPU，内存（Memory），但是针对企业用户和个人用户，电脑组件的价格是不一样的，我们需要根据不同客户获取一台电脑的总价格。
 
-
 我们先抽象出电脑组件这个类
-
 
 ```java
 public abstract class ComputerPart {
     abstract void accept(Visitor visitor);
+
     abstract int getPrice();
 }
 ```
 
-
 每个具体组件会继承这个抽象类,以主板(Board)为例
-
 
 ```java
 public class Board extends ComputerPart {
@@ -1290,9 +1001,7 @@ public class Board extends ComputerPart {
 }
 ```
 
-
 抽象出一个访问者(Visitor)接口，
-
 
 ```java
 public interface Visitor {
@@ -1304,9 +1013,7 @@ public interface Visitor {
 }
 ```
 
-
 每个具体类型的访问者实现这个接口，然后定义其不同的价格策略，以公司访问者为例(CorpVisitor)
-
 
 ```java
 public class CorpVisitor implements Visitor {
@@ -1333,30 +1040,17 @@ public class CorpVisitor implements Visitor {
 }
 ```
 
-
 个人访问者(PersonalVisitor）类似
-
 
 主方法调用
 
-
 ```java
-ComputerPart cpu = new CPU();
-ComputerPart memory = new Memory();
-ComputerPart board = new Board();
-PersonalVisitor personalVisitor = new PersonalVisitor();
-cpu.accept(personalVisitor);
-memory.accept(personalVisitor);
-board.accept(personalVisitor);
-System.out.println(personalVisitor.getTotalPrice());
+ComputerPart cpu=new CPU();ComputerPart memory=new Memory();ComputerPart board=new Board();PersonalVisitor personalVisitor=new PersonalVisitor();cpu.accept(personalVisitor);memory.accept(personalVisitor);board.accept(personalVisitor);System.out.println(personalVisitor.getTotalPrice());
 ```
-
 
 UML图如下
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608796432294-bf88b955-39df-4149-9504-e8d60839225d.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=460&margin=%5Bobject%20Object%5D&originHeight=460&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=460&margin=%5Bobject%20Object%5D&originHeight=460&originWidth=746&status=done&style=none&width=746)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203812990-1168731640.png)
 
 应用
 
@@ -1364,263 +1058,105 @@ UML图如下
 
 - XML文件解析
 
-
-
 ## 构造器模式
-
 
 我们在对一个实体类进行属性的get/set的时候，可以通过封装一些常用的构造方法来简化实体类的构造，
 
-
 比如 [Effective Java中文版（第3版）](https://book.douban.com/subject/30412517/) 中举到到这个例子
-
 
 ```java
 public class NutritionFacts {
-	private final int servingSize;
-	private final int servings;
-	private final int calories;
-	private final int fat;
-	private final int sodium;
-	private final int carbohydrate;
+    private final int servingSize;
+    private final int servings;
+    private final int calories;
+    private final int fat;
+    private final int sodium;
+    private final int carbohydrate;
 
-	public static class Builder {
-		// Required parameters
-		private final int servingSize;
-		private final int servings;
-
-		// Optional parameters - initialized to default values
-		private int calories      = 0;
-		private int fat           = 0;
-		private int sodium        = 0;
-		private int carbohydrate  = 0;
-
-		public Builder(int servingSize, int servings) {
-			this.servingSize = servingSize;
-			this.servings    = servings;
-		}
-
-		public Builder calories(int val) {
-			calories = val;
-			return this;
-		}
-
-		public Builder fat(int val) {
-			fat = val;
-			return this;
-		}
-
-		public Builder sodium(int val) {
-			sodium = val;
-			return this;
-		}
-
-		public Builder carbohydrate(int val) {
-			carbohydrate = val;
-			return this;
-		}
-
-		public NutritionFacts build() {
-			return new NutritionFacts(this);
-		}
-	}
-
-	private NutritionFacts(Builder builder) {
-		servingSize  = builder.servingSize;
-		servings     = builder.servings;
-		calories     = builder.calories;
-		fat          = builder.fat;
-		sodium       = builder.sodium;
-		carbohydrate = builder.carbohydrate;
-	}
-}
+    public static class Builder {        // Required parameters		private final int servingSize;		private final int servings;		// Optional parameters - initialized to default values		private int calories      = 0;		private int fat           = 0;		private int sodium        = 0;		private int carbohydrate  = 0;		public Builder(int servingSize, int servings) {			this.servingSize = servingSize;			this.servings    = servings;		}		public Builder calories(int val) {			calories = val;			return this;		}		public Builder fat(int val) {			fat = val;			return this;		}		public Builder sodium(int val) {			sodium = val;			return this;		}		public Builder carbohydrate(int val) {			carbohydrate = val;			return this;		}		public NutritionFacts build() {			return new NutritionFacts(this);		}	}	private NutritionFacts(Builder builder) {		servingSize  = builder.servingSize;		servings     = builder.servings;		calories     = builder.calories;		fat          = builder.fat;		sodium       = builder.sodium;		carbohydrate = builder.carbohydrate;	}}
 ```
-
 
 其中Builder就是一个内部类，用于构造NutritionFacts的必要信息，外部调用NutritionFacts的构造方法时候，可以这样使用：
 
-
 ```java
-NutritionFacts cocaCola = new NutritionFacts.Builder(240, 8).calories(100).sodium(35).carbohydrate(27).build();
+NutritionFacts cocaCola=new NutritionFacts.Builder(240,8).calories(100).sodium(35).carbohydrate(27).build();
 ```
 
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203832421-1475709680.png)
 
-![](https://cdn.nlark.com/yuque/0/2021/png/757806/1610539905996-0e846f1e-cd6b-4e43-98f6-a9c0f7f1e971.png#align=left&display=inline&height=645&margin=%5Bobject%20Object%5D&originHeight=645&originWidth=536&status=done&style=none&width=536#align=left&display=inline&height=645&margin=%5Bobject%20Object%5D&originHeight=645&originWidth=536&status=done&style=none&width=536)
-
-
-构造器模式也适用于类层次结构。抽象类有抽象的Builder，具体类有具体的Builder。[Effective Java中文版（第3版）](https://book.douban.com/subject/30412517/) 中还有一个例子，
-假设我们抽象出一个披萨类，各种各样的披萨均可以继承披萨这个抽象类来实现自己的具体类型的披萨。
-
+构造器模式也适用于类层次结构。抽象类有抽象的Builder，具体类有具体的Builder。[Effective Java中文版（第3版）](https://book.douban.com/subject/30412517/)
+中还有一个例子， 假设我们抽象出一个披萨类，各种各样的披萨均可以继承披萨这个抽象类来实现自己的具体类型的披萨。
 
 Pizza抽象类如下：
-
 
 ```java
 import java.util.EnumSet;
 import java.util.Objects;
-import java.util.Set;
-
-// Effective Java 3th examples
-public abstract class Pizza {
-    public enum Topping {HAM, MUSHROOM, ONION, PEPPER, SAUSAGE}
-    final Set<Topping> toppings;
-    
-    abstract static class Builder<T extends Builder<T>> {
-        EnumSet<Topping> toppings = EnumSet.noneOf(Topping.class);
-
-        public T addTopping(Topping topping) {
-            toppings.add(Objects.requireNonNull(topping));
-            return self();
-        }
-        
-        abstract Pizza build();
-        
-        // Subclasses must override this method to return "this"
-        protected abstract T self();
-    }
-
-    Pizza(Builder<?> builder) {
-        toppings = builder.toppings.clone(); // See Item 50
-    }
-}
+import java.util.Set;// Effective Java 3th examplespublic abstract class Pizza {    public enum Topping {HAM, MUSHROOM, ONION, PEPPER, SAUSAGE}    final Set<Topping> toppings;        abstract static class Builder<T extends Builder<T>> {        EnumSet<Topping> toppings = EnumSet.noneOf(Topping.class);        public T addTopping(Topping topping) {            toppings.add(Objects.requireNonNull(topping));            return self();        }                abstract Pizza build();                // Subclasses must override this method to return "this"        protected abstract T self();    }    Pizza(Builder<?> builder) {        toppings = builder.toppings.clone(); // See Item 50    }}
 ```
-
 
 其中的Builder方法是abstract的，所以子类需要实现具体的Builder策略，
 
-
 一种披萨的具体实现：NyPizza
-
 
 ```java
 import java.util.Objects;
 
 public class NyPizza extends Pizza {
-	public enum Size {
-		SMALL, MEDIUM, LARGE
-	}
+    public enum Size {SMALL, MEDIUM, LARGE}
 
-	private final Size size;
+    private final Size size;
 
-	public static class Builder extends Pizza.Builder<Builder> {
-		private final Size size;
+    public static class Builder extends Pizza.Builder<Builder> {
+        private final Size size;
 
-		public Builder(Size size) {
-			this.size = Objects.requireNonNull(size);
-		}
+        public Builder(Size size) {
+            this.size = Objects.requireNonNull(size);
+        }
 
-		@Override
-		public NyPizza build() {
-			return new NyPizza(this);
-		}
+        @Override
+        public NyPizza build() {
+            return new NyPizza(this);
+        }
 
-		@Override
-		protected Builder self() {
-			return this;
-		}
-	}
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
 
-	private NyPizza(Builder builder) {
-		super(builder);
-		size = builder.size;
-	}
+    private NyPizza(Builder builder) {
+        super(builder);
+        size = builder.size;
+    }
 }
 ```
-
 
 另一种披萨的具体实现Calzone:
 
-
 ```java
 public class Calzone extends Pizza {
-	private final boolean sauceInside;
+    private final boolean sauceInside;
 
-	public static class Builder extends Pizza.Builder<Builder> {
-		private boolean sauceInside = false; // Default
-
-		public Builder sauceInside() {
-			sauceInside = true;
-			return this;
-		}
-
-		@Override
-		public Calzone build() {
-			return new Calzone(this);
-		}
-
-		@Override
-		protected Builder self() {
-			return this;
-		}
-	}
-
-	private Calzone(Builder builder) {
-		super(builder);
-		sauceInside = builder.sauceInside;
-	}
-}
+    public static class Builder extends Pizza.Builder<Builder> {
+        private boolean sauceInside = false; // Default		public Builder sauceInside() {			sauceInside = true;			return this;		}		@Override		public Calzone build() {			return new Calzone(this);		}		@Override		protected Builder self() {			return this;		}	}	private Calzone(Builder builder) {		super(builder);		sauceInside = builder.sauceInside;	}}
 ```
-
 
 我们在具体调用的时候，可以通过如下方式：
 
-
 ```java
-NyPizza pizza = new NyPizza.Builder(SMALL).addTopping(SAUSAGE).addTopping(ONION).build();
-Calzone calzone = new Calzone.Builder().addTopping(HAM).sauceInside().build();
+NyPizza pizza=new NyPizza.Builder(SMALL).addTopping(SAUSAGE).addTopping(ONION).build();Calzone calzone=new Calzone.Builder().addTopping(HAM).sauceInside().build();
 ```
-
 
 实际应用有非常多，很多组件都提供这样的构造方式，比如OkHttpClient的构造方法：
 
-
 ```java
-public static OkHttpClient create(long connectTimeOut) {
-        return new OkHttpClient().newBuilder()
-                .connectionSpecs(Arrays.asList(
-                        ConnectionSpec.MODERN_TLS,
-                        ConnectionSpec.COMPATIBLE_TLS,
-                        ConnectionSpec.CLEARTEXT))
-                .connectTimeout(connectTimeOut, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS)
-                .connectionPool(CONNECTION_POOL)
-                .retryOnConnectionFailure(true)
-                .followRedirects(true)
-                .followSslRedirects(true)
-                .hostnameVerifier(new HostnameVerifier() {
-                    @Override
-                    public boolean verify(String s, SSLSession sslSession) {
-                        return true;
-                    }
-                })
-                .cookieJar(new CookieJar() {
-                    private List<Cookie> cookies;
-
-                    @Override
-                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-                        this.cookies = cookies;
-                    }
-
-                    @Override
-                    public List<Cookie> loadForRequest(HttpUrl url) {
-                        if (cookies != null) {
-                            return cookies;
-                        }
-                        return Collections.emptyList();
-
-                    }
-                })
-                .build();
-    }
+public static OkHttpClient create(long connectTimeOut){return new OkHttpClient().newBuilder().connectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS,ConnectionSpec.COMPATIBLE_TLS,ConnectionSpec.CLEARTEXT)).connectTimeout(connectTimeOut,TimeUnit.SECONDS).readTimeout(30,TimeUnit.SECONDS).writeTimeout(30,TimeUnit.SECONDS).connectionPool(CONNECTION_POOL).retryOnConnectionFailure(true).followRedirects(true).followSslRedirects(true).hostnameVerifier(new HostnameVerifier(){@Override public boolean verify(String s,SSLSession sslSession){return true;}}).cookieJar(new CookieJar(){private List<Cookie> cookies;@Override public void saveFromResponse(HttpUrl url,List<Cookie> cookies){this.cookies=cookies;}@Override public List<Cookie> loadForRequest(HttpUrl url){if(cookies!=null){return cookies;}return Collections.emptyList();}}).build();}
 ```
-
 
 ## 适配器模式
 
-
 举例说明，假设又一个播放器，需要根据不同格式以及对应的文件来播放，接口设计如下：
-
 
 ```java
 public interface MediaPlayer {
@@ -1628,9 +1164,7 @@ public interface MediaPlayer {
 }
 ```
 
-
 不同类型的播放器只需要实现这个接口即可，比如我们有一个ClassicMediaPlayer，这个只能播放mp3类型的文件
-
 
 ```java
 public class ClassicMediaPlayer implements MediaPlayer {
@@ -1641,14 +1175,11 @@ public class ClassicMediaPlayer implements MediaPlayer {
         } else {
             System.out.println("not supported format");
         }
-
     }
 }
 ```
 
-
 如果我想扩展，我们可以增加一个适配器：
-
 
 ```java
 public class PlayerAdapter implements MediaPlayer {
@@ -1675,42 +1206,28 @@ public class PlayerAdapter implements MediaPlayer {
 }
 ```
 
-
 这个适配器就是根据不同类型来构造不同的播放器的，然后定义一个ExtendMediaPlayer，在里面持有PlayAdapter，这样，ExtendMediaPlayer就拥有了播放不同类型文件的能力，所以我们在调用的时候，只需要：
 
-
 ```java
-ExtendMediaPlayer audioPlayer = new ExtendMediaPlayer();
-audioPlayer.play("mp3", "beyond the horizon.mp3");
-audioPlayer.play("mp4", "alone.mp4");
-audioPlayer.play("avi", "far far away.vlc");
+ExtendMediaPlayer audioPlayer=new ExtendMediaPlayer();audioPlayer.play("mp3","beyond the horizon.mp3");audioPlayer.play("mp4","alone.mp4");audioPlayer.play("avi","far far away.vlc");
 ```
-
 
 UML图如下：
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608867626986-80cd66e0-9a02-4e57-a6df-94a2b5d5c30a.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=258&margin=%5Bobject%20Object%5D&originHeight=258&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=258&margin=%5Bobject%20Object%5D&originHeight=258&originWidth=746&status=done&style=none&width=746)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203910529-2103763663.png)
 
 应用
-
 
 - java.io
 - jdbc-odbc bridge
 - ASM transformer
 
-
-
 ## 桥接模式
-
 
 使用桥接模式，可以将抽象和具体的发展单独分支(抽象中持有一个具体的引用 )
 举例说明：
 
-
 GG在追MM的时候，可以送书和花两种礼物
-
 
 ```java
 public class GG {
@@ -1718,15 +1235,14 @@ public class GG {
         Gift g = new WarmGift(new Flower());
         give(mm, g);
     }
+
     public void give(MM mm, Gift g) {
         System.out.println(g + "gived!");
     }
 }
 ```
 
-
 如上代码，Flower被包装成了一个WarmGift送给MM，WarmGift和WildGift都是Gift的一种抽象，Flower和Book都算Gift的一种具体实现, 我们让Gift这个抽象类中，持有一个GiftImpl的引用
-
 
 ```java
 public abstract class Gift {
@@ -1734,12 +1250,10 @@ public abstract class Gift {
 }
 ```
 
-
 ```java
 public class Flower extends GiftImpl {
 }
 ```
-
 
 ```java
 public class WarmGift extends Gift {
@@ -1749,30 +1263,23 @@ public class WarmGift extends Gift {
 }
 ```
 
-
 UML示例图如下：
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608867105480-312dea95-3703-4189-994c-436ba28d7068.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=530&margin=%5Bobject%20Object%5D&originHeight=530&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=530&margin=%5Bobject%20Object%5D&originHeight=530&originWidth=746&status=done&style=none&width=746)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203924682-825427721.png)
 
 ## 命令模式
 
-
 通过调用者调用接受者执行命令，顺序：调用者→命令→接受者，比如：CopyCommand中的doit方法，就是执行这个copy的命令，undo就是撤销上一次执行的命令，我们可以抽象出Command这个接口：
-
 
 ```java
 public interface Command {
-     void doit();
+    void doit();
 
-     void undo();
+    void undo();
 }
 ```
 
-
 CopyCommand实现这个接口，并实现doit和undo这两个方法，其他的命令也可以类似的实现出来
-
 
 ```java
 public class CopyCommand implements Command {
@@ -1781,7 +1288,6 @@ public class CopyCommand implements Command {
     public CopyCommand(Content content) {
         this.content = content;
     }
-
 
     @Override
     public void doit() {
@@ -1795,27 +1301,19 @@ public class CopyCommand implements Command {
 }
 ```
 
-
 UML图如下
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608860025027-5e35d0c2-acf4-476f-9575-d56805f2c2e9.png#align=left&display=inline&height=547&margin=%5Bobject%20Object%5D&originHeight=547&originWidth=524&status=done&style=none&width=524#align=left&display=inline&height=547&margin=%5Bobject%20Object%5D&originHeight=547&originWidth=524&status=done&style=none&width=524)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203941121-449759923.png)
 
 命令模式可以
-
 
 1. 结合责任链模式实现多次undo[TODO]
 1. 结合组合模式实现宏命令
 1. 结合记忆模式实现transaction回滚
 
-
-
 ## 原型模式
 
-
 原型模式用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象，典型的应用是对象的克隆方法
-
 
 ```java
 public class Person implements Cloneable {
@@ -1832,15 +1330,10 @@ public class Person implements Cloneable {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                ", loc=" + loc +
-                '}';
+        return "Person{" + "name='" + name + '\'' + ", age=" + age + ", loc=" + loc + '}';
     }
 }
 ```
-
 
 ```java
 public class Location implements Cloneable {
@@ -1859,14 +1352,10 @@ public class Location implements Cloneable {
 
     @Override
     public String toString() {
-        return "Location{" +
-                "street='" + street + '\'' +
-                ", roomNo=" + roomNo +
-                '}';
+        return "Location{" + "street='" + street + '\'' + ", roomNo=" + roomNo + '}';
     }
 }
 ```
-
 
 ```java
 public class Main {
@@ -1879,19 +1368,13 @@ public class Main {
 }
 ```
 
-
 UML图如下：
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608514221624-8a094461-e7fd-4f0b-a7e1-6601f65e55ff.png#align=left&display=inline&height=535&margin=%5Bobject%20Object%5D&originHeight=535&originWidth=676&status=done&style=none&width=676#align=left&display=inline&height=535&margin=%5Bobject%20Object%5D&originHeight=535&originWidth=676&status=done&style=none&width=676)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529203955337-1855054863.png)
 
 ## 备忘录模式
 
-
-用于记录对象的某个瞬间 类似快照
-应用实例：
-
+用于记录对象的某个瞬间 类似快照 应用实例：
 
 1. 后悔药。
 1. 打游戏时的存档。
@@ -1899,14 +1382,10 @@ UML图如下：
 1. IE 中的后退。
 1. 数据库的事务管理。
 
-
-
 一个简单的示例
-
 
 ```java
 public class Main {
-
     public static void main(String[] args) {
         Person person = new Person();
         person.name = "zhangsan";
@@ -1927,7 +1406,6 @@ public class Main {
     public void load() {
         File c = new File("/tank.data");
         try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(c));) {
-
             Person myTank = (Person) oos.readObject();
             System.out.println(myTank);
         } catch (IOException e) {
@@ -1939,18 +1417,13 @@ public class Main {
 }
 ```
 
-
 UML图：
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608627185954-cef8f8d0-ab59-4344-bcd7-6790fb0101cc.png#align=left&display=inline&height=581&margin=%5Bobject%20Object%5D&originHeight=581&originWidth=571&status=done&style=none&width=571#align=left&display=inline&height=581&margin=%5Bobject%20Object%5D&originHeight=581&originWidth=571&status=done&style=none&width=571)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529204004374-1944256420.png)
 
 ## 模板方法
 
-
 假设我们要实现一个游戏，这个游戏有初始化，启动，结束三个方法，我们可以定义一个游戏的模板：
-
 
 ```java
 public abstract class Game {
@@ -1968,9 +1441,7 @@ public abstract class Game {
 }
 ```
 
-
 每种类似这样结构（有初始化，启动，结束）的游戏都可以继承这个类来实现这三个方法，比如BasketballGame
-
 
 ```java
 public class BasketballGame extends Game {
@@ -1981,21 +1452,17 @@ public class BasketballGame extends Game {
 
     @Override
     protected void start() {
-
         System.out.println("basketball start");
     }
 
     @Override
     protected void end() {
-
         System.out.println("basketball end");
     }
 }
 ```
 
-
 FootballGame
-
 
 ```java
 public class FootballGame extends Game {
@@ -2006,52 +1473,77 @@ public class FootballGame extends Game {
 
     @Override
     protected void start() {
-
         System.out.println("football start");
     }
 
     @Override
     protected void end() {
-
         System.out.println("football end");
     }
 }
 ```
 
-
 主方法在调用的时候，直接：
 
-
 ```java
-Game basketballGame = new BasketballGame();
-basketballGame.play();
-Game footballGame = new FootballGame();
-footballGame.play();
+Game basketballGame=new BasketballGame();basketballGame.play();Game footballGame=new FootballGame();footballGame.play();
 ```
 
+另外一个例子：
+
+```java
+public abstract class TestCase {
+    public void run() {
+        if (doTest()) {
+            System.out.println("Test succeed.");
+        } else {
+            System.out.println("Test failed.");
+        }
+    }
+
+    public abstract boolean doTest();
+}
+
+public class JunitApplication {
+    private static final List<TestCase> testCases = new ArrayList<>();
+
+    public static void register(TestCase testCase) {
+        testCases.add(testCase);
+    }
+
+    public static final void main(String[] args) {
+        for (TestCase c : testCases) {
+            c.run();
+        }
+    }
+}
+
+public class UserServiceTest extends TestCase {
+
+    @Override
+    public boolean doTest() {
+        System.out.println("do test...");
+        return false;
+    }
+
+}
+
+```
 
 UML图如下：
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608454147289-150b6953-6f40-42a6-b8a5-5669bac0fa1f.png#align=left&display=inline&height=569&margin=%5Bobject%20Object%5D&originHeight=569&originWidth=651&status=done&style=none&width=651#align=left&display=inline&height=569&margin=%5Bobject%20Object%5D&originHeight=569&originWidth=651&status=done&style=none&width=651)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529204012553-323947475.png)
 
 实际应用场景
-
 
 - 钩子函数
 - Spring中的RestTemplate /JDBCTemplate
 
-
-
 ## 状态模式
-
 
 对象的行为依赖于它的状态（属性），并且可以根据它的状态改变而改变它的相关行为。
 
-
 举个例子，Person有Cry, Smile, Say三种行为，但是在不同状态(SadState, HappyState)下，这三种行为不一样，
-
 
 ```java
 public class Person {
@@ -2075,13 +1567,10 @@ public class Person {
 }
 ```
 
-
 在Sad状态下，行为可能是：
-
 
 ```java
 public class SadState implements State {
-
     @Override
     public void cry() {
         System.out.println("Sad cry");
@@ -2099,9 +1588,7 @@ public class SadState implements State {
 }
 ```
 
-
 Happy状态下同理，那么主方法在调用的时候：
-
 
 ```java
 public class Main {
@@ -2114,29 +1601,21 @@ public class Main {
         person.cry();
         person.say();
         person.smile();
-
     }
 }
 ```
 
-
 Person就可以根据不同的状态来执行cry，say，smile的行为了
-
 
 UML图如下：
 
-
-![](https://cdn.nlark.com/yuque/0/2020/png/757806/1608687169228-1427b39c-c354-4472-afaa-52d88e318834.png?x-oss-process=image%2Fresize%2Cw_746#align=left&display=inline&height=449&margin=%5Bobject%20Object%5D&originHeight=449&originWidth=746&status=done&style=none&width=746#align=left&display=inline&height=449&margin=%5Bobject%20Object%5D&originHeight=449&originWidth=746&status=done&style=none&width=746)
-
+![image](https://img2020.cnblogs.com/blog/683206/202105/683206-20210529204039389-864310518.png)
 
 ## 解释器模式
 
-
 一般用于脚本语言解释器
 
-
 ## 参考资料
-
 
 - [Effective Java中文版（第3版）](https://book.douban.com/subject/30412517/)
 - [Head First 设计模式](https://book.douban.com/subject/2243615/)
