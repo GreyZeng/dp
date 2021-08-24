@@ -1,4 +1,4 @@
-package proxy.dynamic;
+package proxy.dynamic.jdk;
 
 /**
  * @author Grey
