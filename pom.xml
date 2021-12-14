@@ -7,6 +7,7 @@
     <groupId>git.snippet</groupId>
     <artifactId>dp</artifactId>
     <version>1.0</version>
+    <url>https://www.cnblogs.com/greyzeng/p/14107751.html</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
