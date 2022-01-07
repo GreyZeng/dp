@@ -5,7 +5,6 @@ public class Tank {
         System.out.println("tank move");
     }
 
-
     public void go() {
         System.out.println("tank go");
     }
