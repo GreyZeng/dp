@@ -22,9 +22,6 @@ public class Cat {
 
     @Override
     public String toString() {
-        return "Cat{" +
-                "height=" + height +
-                ", weight=" + weight +
-                '}';
+        return "Cat{" + "height=" + height + ", weight=" + weight + '}';
     }
 }
