@@ -11,8 +11,7 @@ public class Main {
         enhancer.setSuperclass(Tank.class);
         //设置回调函数
         enhancer.setCallback(new MyMethodInterceptor());
-
-        //这里的creat方法就是正式创建代理类
+        //这里的create方法就是正式创建代理类
         Tank m = (Tank) enhancer.create();
         m.move();
         m.go();
