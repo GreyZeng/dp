@@ -9,7 +9,7 @@ import java.util.Date;
  * @since
  */
 public class OrderServiceStaticProxy implements IOrderService {
-    private final SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+    private static final SimpleDateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy");
     private IOrderService orderService;
 
     public OrderServiceStaticProxy(IOrderService orderService) {
@@ -19,7 +19,7 @@ public class OrderServiceStaticProxy implements IOrderService {
     public int createOrder(Order order) {
         before();
         Long time = order.getCreateTime();
-        int dbRouter = Integer.parseInt(yearFormat.format(new Date(time)));
+        int dbRouter = Integer.parseInt(YEAR_FORMAT.format(new Date(time)));
         System.out.println("静态代理类自动分配到〖DB_" + dbRouter + "〗数据源处理数据");
         DynamicDataSourceEntry.set(dbRouter);
         orderService.createOrder(order);

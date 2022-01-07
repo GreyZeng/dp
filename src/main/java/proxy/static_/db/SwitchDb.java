@@ -11,10 +11,10 @@ import java.util.Date;
  * @since 1.8
  */
 public class SwitchDb {
+    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy/MM/dd");
     public static void main(String[] args) throws Exception {
         Order order = new Order();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        Date date = sdf.parse("2021/10/11");
+        Date date = FORMAT.parse("2021/10/11");
         order.setCreateTime(date.getTime());
         IOrderService orderService = new OrderServiceStaticProxy(new OrderService());
         orderService.createOrder(order);
