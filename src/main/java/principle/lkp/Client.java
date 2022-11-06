@@ -1,4 +1,4 @@
-package principle.demeter;
+package principle.lkp;
 
 /**
  * 不符合迪米特法则
