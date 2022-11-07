@@ -1,5 +1,7 @@
 package singleton;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * 饿汉式单例模式
  * 类加载的时候就会初始化这个实例
@@ -7,6 +9,7 @@ package singleton;
  *
  * @author Grey
  * @date 2020/4/9
+ * @since 1.8
  */
 public class Singleton1 {
     private final static Singleton1 INSTANCE = new Singleton1();
@@ -19,10 +22,10 @@ public class Singleton1 {
     }
 
     // 这种方式可以通过反射破坏
-    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public static void main(String[] args) throws Exception {
         Class<?> aClass = Class.forName("singleton.Singleton1", true, Thread.currentThread().getContextClassLoader());
-        Singleton1 instance1 = (Singleton1) aClass.newInstance();
-        Singleton1 instance2 = (Singleton1) aClass.newInstance();
+        Singleton1 instance1 = (Singleton1) aClass.getDeclaredConstructor().newInstance();
+        Singleton1 instance2 = (Singleton1) aClass.getDeclaredConstructor().newInstance();
         System.out.println(instance1 == instance2);
     }
 }

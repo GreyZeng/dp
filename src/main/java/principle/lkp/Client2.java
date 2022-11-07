@@ -32,17 +32,17 @@ public class Client2 {
     static class CoffeeMachine2 implements ICoffeeMachine2 {
 
         //加咖啡豆
-        public void addCoffeeBean() {
+        private void addCoffeeBean() {
             System.out.println("放咖啡豆");
         }
 
         //加水
-        public void addWater() {
+        private void addWater() {
             System.out.println("加水");
         }
 
         //制作咖啡
-        public void makeCoffee() {
+        private void makeCoffee() {
             System.out.println("制作咖啡");
         }
 

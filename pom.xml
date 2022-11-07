@@ -6,8 +6,6 @@
     <groupId>git.snippet</groupId>
     <artifactId>dp</artifactId>
     <version>1.0</version>
-    <url>https://www.cnblogs.com/greyzeng/p/15775683.html</url>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
