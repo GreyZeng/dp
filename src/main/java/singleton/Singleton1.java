@@ -1,7 +1,5 @@
 package singleton;
 
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * 饿汉式单例模式
  * 类加载的时候就会初始化这个实例
