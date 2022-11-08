@@ -7,8 +7,8 @@ package prototype;
 public class Main {
     public static void main(String[] args) throws CloneNotSupportedException {
         O o = new O();
-        System.out.println(o.clone() == o);
-        System.out.println(o.clone().equals(o));
+        System.out.println(o.clone() == o); // false
+        System.out.println(o.clone().equals(o)); // false
         System.out.println();
         Person p = new Person();
         System.out.println(p);
@@ -17,7 +17,7 @@ public class Main {
     }
 }
 
-class O  implements Cloneable {
+class O implements Cloneable {
     @Override
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();

@@ -18,10 +18,6 @@ public class Person implements Cloneable {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                ", loc=" + loc +
-                '}';
+        return "Person{" + "name='" + name + '\'' + ", age=" + age + ", loc=" + loc + '}';
     }
 }

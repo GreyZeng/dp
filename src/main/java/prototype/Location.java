@@ -20,9 +20,6 @@ public class Location implements Cloneable {
 
     @Override
     public String toString() {
-        return "Location{" +
-                "street='" + street + '\'' +
-                ", roomNo=" + roomNo +
-                '}';
+        return "Location{" + "street='" + street + '\'' + ", roomNo=" + roomNo + '}';
     }
 }
