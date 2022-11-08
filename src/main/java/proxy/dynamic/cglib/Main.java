@@ -1,8 +1,10 @@
 package proxy.dynamic.cglib;
 
-
 import net.sf.cglib.proxy.Enhancer;
 
+/**
+ * cglib 实现动态代理
+ */
 public class Main {
 
     public static void main(String[] args) {
