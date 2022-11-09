@@ -11,7 +11,7 @@ public class TestEnumeration {
         v.addElement("Mr Brown");
         Enumeration<String> e = v.elements();// 返回Enumeration对象
         while (e.hasMoreElements()) {
-            String value = (String) e.nextElement();// 调用nextElement方法获得元素
+            String value = e.nextElement();// 调用nextElement方法获得元素
             System.out.print(value);
         }
     }
