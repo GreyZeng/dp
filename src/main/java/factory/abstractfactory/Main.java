@@ -6,12 +6,11 @@ package factory.abstractfactory;
  */
 public class Main {
     public static void main(String[] args) {
-        AbstractFactory factory = new ModernFactory();
-        factory.createTransportation().go();
-        factory.createWritingInstrument().write();
-
-        factory = new AncientFactory();
-        factory.createTransportation().go();
-        factory.createWritingInstrument().write();
+    	toolCreate(new ModernFactory());
+    	toolCreate(new AncientFactory());
+    }
+    public static void toolCreate(AbstractFactory factory) {
+    	 factory.createTransportation().go();
+         factory.createWritingInstrument().write();
     }
 }
