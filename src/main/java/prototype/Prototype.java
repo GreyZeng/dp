@@ -2,6 +2,7 @@ package prototype;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -9,30 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 使用序列化的方式进行深克隆
+ * 使用序列化的方式进行深克隆,待克隆对象
  *
  * @author <a href="mailto:410486047@qq.com">Grey</a>
  * @date 2021/12/14
  * @since 1.8
  */
-public class DeepCloneDemo {
-    public static void main(String[] args) {
-        List<String> hobbies = new ArrayList<>();
-        hobbies.add("唱歌");
-        hobbies.add("跳舞");
-        Prototype p = new Prototype();
-        p.setAge(18);
-        p.setName("zhangsan");
-        p.setHobbits(hobbies);
-        Prototype clone = p.clone();
-        System.out.println(clone.getAge());
-        System.out.println(clone.getName());
-        System.out.println(clone.getHobbits());
-    }
-}
 
-// 待克隆对象
-class Prototype implements Cloneable, Serializable {
+public class Prototype implements Cloneable, Serializable {
     private int age;
     private String name;
     private List<String> hobbits;
@@ -74,8 +59,7 @@ class Prototype implements Cloneable, Serializable {
             ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
             ObjectInputStream ois = new ObjectInputStream(bis);
             return (Prototype) ois.readObject();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e) {
             return null;
         }
     }
