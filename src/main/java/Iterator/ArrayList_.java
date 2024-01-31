@@ -4,6 +4,7 @@ import static java.lang.System.arraycopy;
 
 /**
  * @author Grey
+ * @param <E>
  * @date 2020/4/15
  */
 public class ArrayList_<E> implements Collection_<E> {
