@@ -5,9 +5,9 @@ package facede;
  * @date 2020/4/13
  */
 public class LabourConstractor {
-	private Mason work1 = new Mason();
-	private BrickWorker work2 = new BrickWorker();
-	private BrickLayer work3 = new BrickLayer();
+	private final Mason work1 = new Mason();
+	private final BrickWorker work2 = new BrickWorker();
+	private final BrickLayer work3 = new BrickLayer();
 
     
 
