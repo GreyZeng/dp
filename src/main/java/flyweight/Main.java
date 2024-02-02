@@ -5,7 +5,7 @@ public class Main {
         System.out.println(new BulletPool().getBullet());
 
         // jdk中这个方法也用到了享元模式
-        Boolean value = Boolean.valueOf(true);
+        Boolean value = Boolean.TRUE;
         System.out.println(value);
 
         // 有两个参数可以配置
