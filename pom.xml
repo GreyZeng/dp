@@ -7,7 +7,7 @@
     <artifactId>dp</artifactId>
     <version>2.0.RELEASE</version>
     <properties>
-        <java.version>21</java.version>
+        <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-            <version>6.0.10</version>
+            <version>5.3.27</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
