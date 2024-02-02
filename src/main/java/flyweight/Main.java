@@ -13,11 +13,11 @@ public class Main {
         // -Djava.lang.Integer.IntegerCache.high=255
         // 方法二：
         // -XX:AutoBoxCacheMax=255
-        Integer i1 = Integer.valueOf(127);
-        Integer i2 = Integer.valueOf(127);
+        Integer i1 = 127;
+        Integer i2 = 127;
         System.out.println(i1 == i2);
-        i1 = Integer.valueOf(128);
-        i2 = Integer.valueOf(128);
+        i1 = 128;
+        i2 = 128;
         System.out.println(i1 == i2);
 
     }
