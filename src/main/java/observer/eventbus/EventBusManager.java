@@ -6,9 +6,9 @@ package observer.eventbus;
  * @since
  */
 public class EventBusManager {
-    private static EventBus eventBus = new EventBus();
+    private static final EventBus eventBus = new EventBus();
 
-    public static EventBus getInstance(){
+    public static EventBus getInstance() {
         return eventBus;
     }
 

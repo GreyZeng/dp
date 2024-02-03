@@ -8,7 +8,7 @@ import java.util.List;
  * @date 2020/4/14
  */
 public class Button {
-    private List<ActionListener> listeners = new ArrayList<>();
+    private final List<ActionListener> listeners = new ArrayList<>();
 
     public void addActionListener(ActionListener listener) {
         this.listeners.add(listener);

@@ -10,8 +10,8 @@ import java.lang.reflect.Method;
  */
 
 public class ObserverAction {
-    private Object target;
-    private Method method;
+    private final Object target;
+    private final Method method;
 
     public ObserverAction(Object target, Method method) {
         this.target = target;

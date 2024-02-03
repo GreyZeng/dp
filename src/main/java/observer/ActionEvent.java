@@ -5,8 +5,8 @@ package observer;
  * @date 2020/4/14
  */
 public class ActionEvent {
-    private long when;
-    private Object source;
+    private final long when;
+    private final Object source;
 
     public ActionEvent(long when, Object source) {
         this.when = when;

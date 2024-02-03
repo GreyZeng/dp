@@ -12,8 +12,8 @@ import java.util.concurrent.Executor;
  */
 
 public class EventBus {
-    private Executor executor;
-    private ObserverRegistry registry = new ObserverRegistry();
+    private final Executor executor;
+    private final ObserverRegistry registry = new ObserverRegistry();
 
     public EventBus() {
         this(MoreExecutors.directExecutor());

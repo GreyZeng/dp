@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 
 public class ObserverRegistry {
-    private ConcurrentMap<Class<?>, CopyOnWriteArraySet<ObserverAction>> registry = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Class<?>, CopyOnWriteArraySet<ObserverAction>> registry = new ConcurrentHashMap<>();
 
     public void register(Object observer) {
         Map<Class<?>, Collection<ObserverAction>> observerActions = findAllObserverActions(observer);
