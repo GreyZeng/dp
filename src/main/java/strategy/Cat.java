@@ -4,8 +4,8 @@ package strategy;
  * @author Grey
  */
 public class Cat {
-    private int height;
-    private int weight;
+    private final int height;
+    private final int weight;
 
     public Cat(int height, int weight) {
         this.height = height;
@@ -22,6 +22,6 @@ public class Cat {
 
     @Override
     public String toString() {
-        return "Cat{" + "height=" + height + ", weight=" + weight + '}';
+        return "Cat{" + "height=" + getHeight() + ", weight=" + getWeight() + '}';
     }
 }
