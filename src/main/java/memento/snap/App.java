@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.Stack;
 
 class InputText {
-    private StringBuilder text = new StringBuilder();
+    private final StringBuilder text = new StringBuilder();
 
     public String getText() {
         return text.toString();
@@ -24,7 +24,7 @@ class InputText {
 }
 
 class Snapshot {
-    private String text;
+    private final String text;
 
     public Snapshot(String text) {
         this.text = text;
@@ -36,7 +36,7 @@ class Snapshot {
 }
 
 class SnapshotHolder {
-    private Stack<Snapshot> snapshots = new Stack<>();
+    private final Stack<Snapshot> snapshots = new Stack<>();
 
     public Snapshot popSnapshot() {
         return snapshots.pop();
