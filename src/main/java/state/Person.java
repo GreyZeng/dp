@@ -5,7 +5,7 @@ package state;
  * @date 2020/4/17
  */
 public class Person {
-    private State state;
+    private final State state;
 
     public Person(State state) {
         this.state = state;
